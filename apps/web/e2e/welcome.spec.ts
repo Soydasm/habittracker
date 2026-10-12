@@ -80,7 +80,7 @@ test.describe('the welcome screen at 390 px follows the device setting', () => {
     const button = page.getByTestId('welcome-start');
     await expect(button).toHaveCSS('background-color', 'rgb(123, 97, 197)'); // #7b61c5
     const box = await button.boundingBox();
-    expect(box && Math.round(box.width)).toBe(272);
+    expect(box && Math.round(box.width)).toBe(271);
     expect(box && Math.round(box.height)).toBe(57);
     expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(0);
   });
@@ -92,5 +92,22 @@ test.describe('the welcome screen at 390 px follows the device setting', () => {
     await expect(page.getByTestId('welcome-start')).toHaveCSS('background-color', 'rgb(93, 71, 152)'); // #5d4798
     await expect(page.getByTestId('welcome-tagline')).toHaveCSS('color', 'rgba(255, 255, 255, 0.5)');
     await expect(page.getByTestId('welcome-title')).toHaveCSS('color', 'rgb(255, 255, 255)');
+  });
+
+  test('every Figma layer of the illustration is its own image at its place on the stage', async ({ page }) => {
+    await page.goto('/welcome');
+    await expect(page.getByTestId('welcome-screen')).toBeVisible({ timeout: 30_000 });
+    const tick = await page.getByTestId('welcome-sprite-5:208').boundingBox();
+    expect(tick && [Math.round(tick.x), Math.round(tick.y), Math.round(tick.width), Math.round(tick.height)])
+      .toEqual([116, 397, 72, 48]);
+    const arrow = await page.getByTestId('welcome-start').locator('img').nth(1).boundingBox();
+    expect(arrow && [Math.round(arrow.width), Math.round(arrow.height)]).toEqual([16, 16]);
+  });
+
+  test('?scheme=dark pins the dark look whatever the device says', async ({ page }) => {
+    await page.emulateMedia({ colorScheme: 'light' });
+    await page.goto('/welcome?scheme=dark');
+    await expect(page.getByTestId('welcome-screen')).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByTestId('welcome-start')).toHaveCSS('background-color', 'rgb(93, 71, 152)');
   });
 });

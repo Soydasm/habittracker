@@ -1,11 +1,25 @@
 import React from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, View, type PressableProps } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { ActivityIndicator, Image, Pressable, StyleSheet, View, type PressableProps } from 'react-native';
 import { useTheme, type Theme } from '../theme';
 import { AppText } from './AppText';
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
-type IconName = React.ComponentProps<typeof Ionicons>['name'];
+type IconName = 'arrow-forward' | 'add';
+
+const svgUri = (svg: string) => `data:image/svg+xml;utf8,${svg}`;
+const GLYPHS: Record<IconName, string> = {
+  'arrow-forward': 'M1 8H15M9 2L15 8L9 14',
+  add: 'M8 1V15M1 8H15',
+};
+/** The design's round icon: a radial gradient disc (`centre` to `edge`) and, in its middle, a 16 px glyph. */
+const discSvg = (centre: string, edge: string) =>
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><defs><radialGradient id="d" cx=".5" cy=".58" r=".52">' +
+  `<stop offset="0" stop-color="${centre}"/><stop offset=".55" stop-color="${centre}" stop-opacity=".9"/>` +
+  `<stop offset="1" stop-color="${edge}"/></radialGradient></defs><circle cx=".5" cy=".5" r=".5" fill="url(#d)"/></svg>`;
+const glyphSvg = (name: IconName, ink: string) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="${GLYPHS[name]}" fill="none" stroke="${ink}" ` +
+  'stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const GLYPH_SIZE = 16;
 
 /**
  * The one button, drawn like the design's "Let's Start!": a full-round pill, 57 px high, the label centred,
@@ -34,7 +48,12 @@ export function Button({ title, variant = 'primary', size = 'md', icon, loading,
       {loading ? (
         <View style={s.trailing}><ActivityIndicator size="small" color={ink} /></View>
       ) : icon ? (
-        <View style={s.trailing}><Ionicons name={icon} size={size === 'sm' ? 18 : 22} color={theme.colors.onPrimary} /></View>
+        <View style={s.trailing} pointerEvents="none">
+          <Image accessible={false} resizeMode="stretch" style={s.disc}
+            source={{ uri: svgUri(discSvg(theme.colors.accentCenter, theme.colors.accentEdge)) }} />
+          <Image accessible={false} resizeMode="stretch" style={s.glyph}
+            source={{ uri: svgUri(glyphSvg(icon, theme.colors.onPrimary)) }} />
+        </View>
       ) : null}
     </Pressable>
   );
@@ -63,8 +82,10 @@ function styles(theme: Theme, variant: Variant, size: 'sm' | 'md', trailing: 'no
     label: { color: ink, textAlign: 'center' },
     trailing: {
       position: 'absolute', right: edge, top: edge, width: circle, height: circle, borderRadius: theme.radius.pill,
-      backgroundColor: trailing === 'busy' ? 'transparent' : colors.accent, alignItems: 'center', justifyContent: 'center',
+      alignItems: 'center', justifyContent: 'center',
     },
+    disc: { position: 'absolute', top: 0, left: 0, width: circle, height: circle },
+    glyph: { width: GLYPH_SIZE, height: GLYPH_SIZE },
     pressed: { opacity: 0.85 },
     disabled: { opacity: 0.5 },
   });

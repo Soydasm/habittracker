@@ -22,6 +22,8 @@ const palette = {
     primaryStrong: '#7b61c5', // the pill button fill
     onPrimary: '#ffffff',
     accent: '#ff9c28', // the round icon on the pill button
+    accentCenter: '#f6a53a', // that round icon is a radial gradient: centre ...
+    accentEdge: '#fdf47f', // ... to edge
     success: '#346d63',
     warning: '#ff9c28',
     danger: '#fa4542',
@@ -48,6 +50,8 @@ const palette = {
     primaryStrong: '#5d4798',
     onPrimary: '#ffffff',
     accent: '#ff9c28',
+    accentCenter: '#f6a53a',
+    accentEdge: '#fdf47f',
     success: '#1effd6',
     warning: '#ff9c28',
     danger: '#ff3b62',
@@ -115,10 +119,17 @@ function useWebFont() {
   }, []);
 }
 
+/** `?scheme=dark|light` pins the look for a link (a design review of the dark frames); otherwise the device decides. */
+function initialMode(): ThemeMode {
+  if (Platform.OS !== 'web' || typeof window === 'undefined') return 'system';
+  const asked = new URLSearchParams(window.location.search).get('scheme');
+  return asked === 'dark' || asked === 'light' ? asked : 'system';
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useWebFont();
   const system = useColorScheme() === 'dark' ? 'dark' : 'light';
-  const [mode, setMode] = useState<ThemeMode>('system');
+  const [mode, setMode] = useState<ThemeMode>(initialMode);
   const resolved = mode === 'system' ? system : mode;
   const value = useMemo(
     () => ({ theme: { mode: resolved, colors: palette[resolved], ...tokens }, mode, setMode }),
