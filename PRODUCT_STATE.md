@@ -36,7 +36,7 @@ instead of adding a second way to do the same thing._
 | /ui-kit | `apps/web/app/ui-kit.tsx` | AppText, Badge, Button, Card, EmptyState, Header, Input, Screen, useI18n, useTheme | no |
 
 ### Layouts (the chrome around routes)
-- `apps/web/app/_layout.tsx` — AppText, AuthProvider, BottomNav, HOME_ROUTE, Header, I18nProvider, SETTINGS_ROUTE, ThemeProvider, useAuth, useAuthGuard, useI18n, useTheme
+- `apps/web/app/_layout.tsx` — AppText, AuthProvider, BottomNav, HOME_ROUTE, Header, I18nProvider, LOGIN_ROUTE, REGISTER_ROUTE, SETTINGS_ROUTE, ThemeProvider, useAuth, useAuthGuard, useI18n, useTheme
 
 ### Shared components
 | component | file | used by |
@@ -61,4 +61,4 @@ instead of adding a second way to do the same thing._
 
 ## Decisions
 - TASK-20261012-258852 — Design foundation: Tema, ortak bileşenler, gezinme kabuğu ve boş ana sayfa hazır. `pytest -q` (5 test), `npx tsc --noEmit` ve `npx playwright test` (5 test) geçti. Ekranlara 375, 390 ve 1440 px'te açık/koyu baktım. - **Tema:** `tokens.json _(TASK-20261012-258852, 2026-10-12)_
-- TASK-20261012-233064 — Kullanıcı kayıt olur, girer, çıkış yapar: Kayıt, giriş ve çıkış akışı çalışıyor. Beş kabul ölçütünün hepsi ve alt gezinme / Giriş↔Kayıt bağlantısı e2e ile doğrulandı. `pytest -q` (17), `npx tsc --noEmit` ve `npx playwright test` (13) geçti. `/login`, `/register` _(TASK-20261012-233064, 2026-10-12)_
+- TASK-20261012-233064 — Kullanıcı kayıt olur, girer, çıkış yapar: Ana sayfada Giriş ve Kayıt'a giden bir bağlantı yoktu. Bu bir karar değil, eksikti. Üstteki başlık şeridinin sağına "Giriş yap" ve "Kayıt ol" bağlantıları ekledim. Bunlar yalnızca giriş yapmamış kullanıcıya görünüyor. -  _(TASK-20261012-233064, 2026-10-12)_
