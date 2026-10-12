@@ -49,3 +49,7 @@ Giriş/kayıt, ana liste, alışkanlık ekleme, günlük işaretleme, haftalık 
 
 ## Lessons (updated by the platform after each sprint retro)
 - (none yet)
+
+## Lessons — Retro — Sprint 1
+- Her kabul kriterindeki 'Then' ifadesi ekranda görünen bir öğeye (metin, liste satırı, hata mesajı) bağlanmalı. Sprint 1'deki UAT reddi bu kuralı güçlendirmek için bir uyarıdır; nedeni ölçümde yok.
+- Bir görev review'a gönderilmeden önce Developer, görevin her kabul kriterini önizlemede tek tek elle doğrulamalı. Review turu ortalaması 1,67 olduğu için ilk turda geçme oranı artırılmalı.
