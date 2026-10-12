@@ -24,6 +24,8 @@ export default defineMessages({
     'auth.error.invalidCredentials': 'E-posta veya şifre hatalı.',
     'auth.error.tooMany': 'Çok fazla deneme yaptın. Biraz bekleyip tekrar dene.',
     'auth.error.generic': 'Bir şeyler ters gitti. Lütfen tekrar dene.',
+    'auth.nav.login': 'Giriş yap',
+    'auth.nav.register': 'Kayıt ol',
     'auth.settings.title': 'Ayarlar',
     'auth.settings.account': 'Hesap',
     'auth.settings.email': 'E-posta',

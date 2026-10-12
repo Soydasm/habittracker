@@ -7,10 +7,10 @@ import { AppText } from './AppText';
 /**
  * The design's top sheet (the slide): a white (dark: slate) band with the soft shadow and rounded bottom corners,
  * the title on the left in the violet and an optional note on the right. Its content is capped to the
- * content width of a screen on a desktop. The titleSlot prop replaces the plain title (the shell puts a link there).
+ * content width of a screen on a desktop. The titleSlot prop replaces the plain title (the shell puts a link there); actionSlot is the right side's controls (the shell puts the sign-in links there).
  */
-export function Header({ title, note, titleSlot, testID }: {
-  title?: string; note?: string; titleSlot?: React.ReactNode; testID?: string;
+export function Header({ title, note, titleSlot, actionSlot, testID }: {
+  title?: string; note?: string; titleSlot?: React.ReactNode; actionSlot?: React.ReactNode; testID?: string;
 }) {
   const { theme } = useTheme();
   const insets = useSafeAreaInsets();
@@ -28,6 +28,7 @@ export function Header({ title, note, titleSlot, testID }: {
     <View testID={testID} style={sheet}>
       <View style={row}>
         {titleSlot ?? <AppText accessibilityRole="header" style={{ color: theme.colors.primary }}>{title}</AppText>}
+        {actionSlot}
         {note ? <AppText variant="small" muted style={{ textAlign: 'right', flexShrink: 1 }}>{note}</AppText> : null}
       </View>
     </View>

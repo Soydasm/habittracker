@@ -101,4 +101,20 @@ test.describe('register, sign in, sign out', () => {
     await page.getByTestId('login-submit').click();
     await expect(page.getByTestId('home-screen')).toBeVisible({ timeout: 30_000 });
   });
+
+  test('a visitor reaches sign-in and sign-up from the home screen header', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.getByTestId('home-screen')).toBeVisible({ timeout: 30_000 });
+    await page.getByTestId('app-header-register').click();
+    await expect(page.getByTestId('register-screen')).toBeVisible({ timeout: 30_000 });
+    await page.getByTestId('app-header-login').click();
+    await expect(page.getByTestId('login-screen')).toBeVisible();
+  });
+
+  test('a signed-in user does not see the sign-in links in the header', async ({ page }) => {
+    await signUp(page, uniqueEmail());
+    await expect(page.getByTestId('home-screen')).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByTestId('app-header-login')).toHaveCount(0);
+    await expect(page.getByTestId('app-header-register')).toHaveCount(0);
+  });
 });
