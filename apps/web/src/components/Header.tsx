@@ -6,7 +6,7 @@ import { AppText } from './AppText';
 
 /**
  * The design's top sheet (the slide): a white (dark: slate) band with the soft shadow and rounded bottom corners,
- * the title on the left in the violet and an optional note on the right. Its content is capped to the
+ * the title on the left in the violet and an optional note on the right, and the handle line at its lower edge. Its content is capped to the
  * content width of a screen on a desktop. The titleSlot prop replaces the plain title (the shell puts a link there); actionSlot is the right side's controls (the shell puts the sign-in links there).
  */
 export function Header({ title, note, titleSlot, actionSlot, testID }: {
@@ -31,6 +31,10 @@ export function Header({ title, note, titleSlot, actionSlot, testID }: {
         {actionSlot}
         {note ? <AppText variant="small" muted style={{ textAlign: 'right', flexShrink: 1 }}>{note}</AppText> : null}
       </View>
+      <View style={{
+        position: 'absolute', bottom: theme.spacing.xs, alignSelf: 'center', width: 54, height: 3,
+        borderRadius: theme.radius.pill, backgroundColor: theme.colors.border,
+      }} />
     </View>
   );
 }

@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'django_filters',
     'apps.core',
     'apps.users',
+    'apps.habits',
 ]
 
 MIDDLEWARE = [

@@ -31,6 +31,11 @@ const palette = {
     dayFuture: '#a0a0a0', // a day chip still ahead
     glow: 'rgba(207, 112, 213, 0.27)', // decorative bubbles
     glowStrong: 'rgba(207, 112, 213, 0.61)',
+    tickIdle: '#d2d6e2', // the tracker ring: a tick not reached
+    tickActive: '#c63fdc', // the first reached tick (magenta) ...
+    tickFade: '#d4cad8', // ... fading into this one
+    discRing: '#f1e9fa', // the tracker's round button: its halo
+    disc: '#f4f5f8', // and its face
   },
   dark: {
     background: '#2b2630',
@@ -52,6 +57,11 @@ const palette = {
     dayFuture: '#565656',
     glow: 'rgba(207, 112, 213, 0.27)',
     glowStrong: 'rgba(207, 112, 213, 0.61)',
+    tickIdle: '#565656',
+    tickActive: '#c63fdc',
+    tickFade: '#cab9c9',
+    discRing: '#9a4fb0',
+    disc: '#25262d',
   },
 };
 

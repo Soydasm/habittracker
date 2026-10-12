@@ -1,0 +1,22 @@
+{
+  "_login": {
+    "route": "/login",
+    "fill": {
+      "[data-testid=login-email-input]": "design@example.com",
+      "[data-testid=login-password-input]": "correct-horse-9"
+    },
+    "submit": "[data-testid=login-submit]"
+  },
+  "_omit": {
+    "S01": [
+      {"what": "2 times per week", "because": "\"yalnızca ad girilir\" — a habit has only a name, so there is no frequency to show"}
+    ],
+    "S06": [
+      {"what": "2 times per week", "because": "\"yalnızca ad girilir\" — a habit has only a name, so there is no frequency to show"}
+    ]
+  },
+  "S01.1": {"route": "/", "files": ["apps/web/src/features/habits/Tracker.tsx", "apps/web/src/components/Header.tsx", "apps/web/app/index.tsx"]},
+  "S01.2": {"route": "/", "files": ["apps/web/src/features/habits/DayStrip.tsx", "apps/web/src/features/habits/HabitCard.tsx", "apps/web/src/features/habits/HabitList.tsx"]},
+  "S06.1": {"route": "/", "files": ["apps/web/src/features/habits/Tracker.tsx", "apps/web/src/components/Header.tsx", "apps/web/app/index.tsx"]},
+  "S06.2": {"route": "/", "files": ["apps/web/src/features/habits/DayStrip.tsx", "apps/web/src/features/habits/HabitCard.tsx", "apps/web/src/features/habits/HabitList.tsx"]}
+}

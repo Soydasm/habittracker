@@ -8,8 +8,9 @@ import { Button } from './Button';
 type IconName = React.ComponentProps<typeof Ionicons>['name'];
 
 /** What a list shows when there is nothing yet — and what the user can do about it. Never a blank screen. */
-export function EmptyState({ icon = 'sparkles-outline', title, body, actionTitle, onAction, testID }: {
-  icon?: IconName; title: string; body?: string; actionTitle?: string; onAction?: () => void; testID?: string;
+export function EmptyState({ icon = 'sparkles-outline', title, body, actionTitle, onAction, actionTestID, testID }: {
+  icon?: IconName; title: string; body?: string; actionTitle?: string; onAction?: () => void; actionTestID?: string;
+  testID?: string;
 }) {
   const { theme } = useTheme();
   return (
@@ -22,7 +23,7 @@ export function EmptyState({ icon = 'sparkles-outline', title, body, actionTitle
       </View>
       <AppText variant="heading" style={{ textAlign: 'center' }}>{title}</AppText>
       {body ? <AppText variant="small" muted style={{ textAlign: 'center', maxWidth: 420 }}>{body}</AppText> : null}
-      {actionTitle && onAction ? <Button title={actionTitle} onPress={onAction} style={{ marginTop: theme.spacing.sm }} /> : null}
+      {actionTitle && onAction ? <Button title={actionTitle} onPress={onAction} testID={actionTestID} style={{ marginTop: theme.spacing.sm }} /> : null}
     </View>
   );
 }
