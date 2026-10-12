@@ -17,7 +17,7 @@ import { SPRITES, STAGE, backdropSvg, ringSvg } from './illustration';
 /** Measures of the Figma frame (390 px wide) that are not spacing tokens: where each piece sits on the stage. */
 const FRAME = {
   side: 59, skip: { right: 32, top: 40 }, dots: { left: 160, top: 587, ring: 14, dot: 6 },
-  title: { top: 621, width: 272 }, tagline: { top: 665, width: 270 }, button: { top: 741, width: 271 },
+  title: { top: 621, width: 258, height: 58 }, tagline: { top: 665, width: 270 }, button: { top: 741, width: 271 },
 };
 const svgUri = (svg: string) => `data:image/svg+xml;utf8,${svg}`;
 
@@ -82,7 +82,7 @@ export function WelcomeScreen() {
             </Pressable>
           </Link>
           <AppText variant="title" accessibilityRole="header" testID="welcome-title" numberOfLines={1}
-            style={{ position: 'absolute', left: FRAME.side, top: FRAME.title.top, width: FRAME.title.width,
+            style={{ position: 'absolute', left: FRAME.side, top: FRAME.title.top, width: FRAME.title.width, height: FRAME.title.height,
               color: colors.welcomeText }}>
             {t('app.name')}
           </AppText>
