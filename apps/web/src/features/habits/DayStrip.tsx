@@ -36,7 +36,7 @@ export function DayStrip() {
             key={offset} testID={today ? 'home-day-today' : 'home-day'} accessible
             accessibilityLabel={format.date(date, { dateStyle: 'full' })}
             style={{
-              width: CHIP, height: today ? TODAY_HEIGHT : CHIP, borderRadius: theme.radius.pill, backgroundColor: fill,
+              width: CHIP, height: today ? TODAY_HEIGHT : CHIP, borderRadius: theme.radius.circle, backgroundColor: fill,
               alignItems: 'center', paddingTop: theme.spacing.tight - theme.spacing.xxs, gap: theme.spacing.xxs,
             }}
           >

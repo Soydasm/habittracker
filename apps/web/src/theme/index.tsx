@@ -36,6 +36,9 @@ const palette = {
     tickFade: '#d4cad8', // ... fading into this one
     discRing: '#f1e9fa', // the tracker's round button: its halo
     disc: '#f4f5f8', // and its face
+    haze: 'rgba(228, 170, 255, 0.27)', // the lilac glow under the tracker's round button
+    umbra: 'rgba(26, 23, 45, 0.17)', // the grey shade under it
+    sheetShade: 'rgba(39, 47, 54, 0.2)', // the blurred shade behind the top sheet
   },
   dark: {
     background: '#2b2630',
@@ -62,6 +65,9 @@ const palette = {
     tickFade: '#cab9c9',
     discRing: '#9a4fb0',
     disc: '#25262d',
+    haze: 'rgba(228, 170, 255, 0.27)',
+    umbra: 'rgba(26, 23, 45, 0.17)',
+    sheetShade: 'rgba(39, 47, 54, 0.2)',
   },
 };
 
@@ -75,7 +81,7 @@ export const tokens = {
   /** Gaps and paddings: every one is one of these. `tight` and `cozy` are the design's 6 and 12 px gaps. */
   spacing: { xxs: 2, xs: 4, tight: 6, sm: 8, cozy: 12, md: 16, lg: 24, xl: 32, xxl: 48 },
   /** The design's radii: 8 (small things), 20 (cards), 26 (sheets), 38 (the pill button); 22, 23 and 56 are full circles. */
-  radius: { sm: 8, md: 20, lg: 26, xl: 38, pill: 999 },
+  radius: { sm: 8, md: 20, lg: 26, xl: 38, circle: 23, pill: 999 },
   /** A card's inner padding in the design: 18 px above and below, 30 px at the sides. */
   cardPadding: { vertical: 18, horizontal: 30 },
   /** The design's font sizes and line heights (Jost). Use the `AppText` variants rather than these where you can. */

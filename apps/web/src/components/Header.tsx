@@ -4,6 +4,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../theme';
 import { AppText } from './AppText';
 
+/** The design's blurred shade behind the sheet: 43 px in from both sides, blurred by 44 (a deviation of half that). */
+const SHADE_INSET = 43;
+const SHADE_BLUR = 22;
+
 /**
  * The design's top sheet (the slide): a white (dark: slate) band with the soft shadow and rounded bottom corners,
  * the title on the left in the violet and an optional note on the right, and the handle line at its lower edge. Its content is capped to the
@@ -25,16 +29,24 @@ export function Header({ title, note, titleSlot, actionSlot, testID }: {
     paddingHorizontal: theme.spacing.xl,
   } as const;
   return (
-    <View testID={testID} style={sheet}>
-      <View style={row}>
-        {titleSlot ?? <AppText accessibilityRole="header" style={{ color: theme.colors.primary }}>{title}</AppText>}
-        {actionSlot}
-        {note ? <AppText variant="small" muted style={{ textAlign: 'right', flexShrink: 1 }}>{note}</AppText> : null}
+    <View>
+      <View
+        style={{
+          position: 'absolute', top: 0, bottom: 0, left: SHADE_INSET, right: SHADE_INSET, borderRadius: theme.radius.lg,
+          backgroundColor: theme.colors.sheetShade, filter: `blur(${SHADE_BLUR}px)`, pointerEvents: 'none',
+        }}
+      />
+      <View testID={testID} style={sheet}>
+        <View style={row}>
+          {titleSlot ?? <AppText accessibilityRole="header" style={{ color: theme.colors.primary }}>{title}</AppText>}
+          {actionSlot}
+          {note ? <AppText variant="small" muted style={{ textAlign: 'right', flexShrink: 1 }}>{note}</AppText> : null}
+        </View>
+        <View style={{
+          position: 'absolute', bottom: theme.spacing.xs, alignSelf: 'center', width: 54, height: 3,
+          borderRadius: theme.radius.pill, backgroundColor: theme.colors.border,
+        }} />
       </View>
-      <View style={{
-        position: 'absolute', bottom: theme.spacing.xs, alignSelf: 'center', width: 54, height: 3,
-        borderRadius: theme.radius.pill, backgroundColor: theme.colors.border,
-      }} />
     </View>
   );
 }

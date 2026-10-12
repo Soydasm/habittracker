@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, useWindowDimensions } from 'react-native';
-import { AppText } from '../../components';
+import { AppText, Graphic } from '../../components';
 import { useI18n } from '../../i18n';
 import { useTheme } from '../../theme';
 
@@ -25,7 +25,24 @@ const BUBBLES = [
   { left: 0, top: 106, size: 8, glow: 'strong' },
 ] as const;
 
-const channels = (hex: string) => [1, 3, 5].map((at) => parseInt(hex.slice(at, at + 2), 16));
+/** The blurred ellipses under the round button: left, top (inside the ring), size, and which colour they use. */
+const SHADES = [
+  { left: 33, top: 88, size: 153, color: 'haze' },
+  { left: 73, top: 128, size: 151, color: 'umbra' },
+] as const;
+/** The design blurs them by 47 (a Gaussian's deviation is half of that); the picture leaves room for the spread. */
+const BLUR = 47;
+const SPREAD = BLUR * 2;
+
+const disc = (size: number, fill: string) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><circle cx="${size / 2}" cy="${size / 2}" r="${size / 2}" fill="${fill}"/></svg>`;
+
+const blurredDisc = (size: number, fill: string) => {
+  const full = size + SPREAD * 2;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${full}" height="${full}"><filter id="b" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="${BLUR / 2}"/></filter><circle cx="${full / 2}" cy="${full / 2}" r="${size / 2}" fill="${fill}" filter="url(#b)"/></svg>`;
+};
+
+const channels =(hex: string) => [1, 3, 5].map((at) => parseInt(hex.slice(at, at + 2), 16));
 
 /** `from` → `to` at `step` (0..1), both `#rrggbb`. */
 function mix(from: string, to: string, step: number) {
@@ -54,13 +71,20 @@ export function Tracker({ count }: { count: number | null }) {
       style={{ width: Math.min(WIDTH, width), height: HEIGHT, alignSelf: 'center' }}
     >
       {BUBBLES.map((bubble) => (
-        <View key={`${bubble.left}-${bubble.top}`} style={{
-          position: 'absolute', left: bubble.left, top: bubble.top, width: bubble.size, height: bubble.size,
-          borderRadius: theme.radius.pill, backgroundColor: glow[bubble.glow],
-          opacity: bubble.glow === 'faint' ? 0.4 : 1,
-        }} />
+        <Graphic
+          key={`${bubble.left}-${bubble.top}`} svg={disc(bubble.size, glow[bubble.glow])} width={bubble.size}
+          height={bubble.size}
+          style={{ position: 'absolute', left: bubble.left, top: bubble.top, opacity: bubble.glow === 'faint' ? 0.4 : 1 }}
+        />
       ))}
       <View style={{ position: 'absolute', top: RING_TOP, left: (Math.min(WIDTH, width) - RING) / 2, width: RING, height: RING }}>
+        {SHADES.map((shade) => (
+          <Graphic
+            key={shade.color} svg={blurredDisc(shade.size, colors[shade.color])} width={shade.size + SPREAD * 2}
+            height={shade.size + SPREAD * 2}
+            style={{ position: 'absolute', left: shade.left - SPREAD, top: shade.top - SPREAD }}
+          />
+        ))}
         {ticks.map((tick) => (
           <View key={tick.angle} style={{
             position: 'absolute', width: RING, height: RING, alignItems: 'center',
@@ -70,7 +94,7 @@ export function Tracker({ count }: { count: number | null }) {
           </View>
         ))}
         <View style={[centred, { left: (RING - HALO) / 2, top: (RING - HALO) / 2, width: HALO, height: HALO,
-          borderRadius: theme.radius.pill, backgroundColor: colors.discRing, ...theme.shadow.md }]}>
+          borderRadius: theme.radius.pill, backgroundColor: colors.discRing }]}>
           <View style={[centred, { position: 'relative', width: FACE, height: FACE, borderRadius: theme.radius.pill,
             backgroundColor: colors.disc }]}>
             <AppText variant="display" testID="home-tracker-count" style={{ textAlign: 'center' }}>
