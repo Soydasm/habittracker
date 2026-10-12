@@ -10,6 +10,7 @@ import habitChecks from './habit-checks';
 import habits from './habits';
 import nav from './nav';
 import uiKit from './uiKit';
+import welcome from './welcome';
 
 const features = [
   auth,
@@ -18,6 +19,7 @@ const features = [
   habits,
   nav,
   uiKit,
+  welcome,
 ] as const;
 
 type KeysOf<F> = F extends Record<Locale, Record<infer K, string>> ? K : never;

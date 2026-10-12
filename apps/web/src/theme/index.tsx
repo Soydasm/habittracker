@@ -22,6 +22,8 @@ const palette = {
     primaryStrong: '#7b61c5', // the pill button fill
     onPrimary: '#ffffff',
     accent: '#ff9c28', // the round icon on the pill button
+    accentCenter: '#f6a53a', // that round icon is a radial gradient: centre ...
+    accentEdge: '#fdf47f', // ... to edge
     success: '#346d63',
     warning: '#ff9c28',
     danger: '#fa4542',
@@ -31,6 +33,11 @@ const palette = {
     dayFuture: '#a0a0a0', // a day chip still ahead
     glow: 'rgba(207, 112, 213, 0.27)', // decorative bubbles
     glowStrong: 'rgba(207, 112, 213, 0.61)',
+    welcomeTop: '#d089ed', // the Start screen's gradient, top and bottom
+    welcomeBottom: '#8f72f7',
+    welcomeText: '#ffffff', // text on that gradient
+    welcomeTextSoft: '#ffffff',
+    welcomeDot: 'rgba(255, 255, 255, 0.5)',
     tickIdle: '#d2d6e2', // the tracker ring: a tick not reached
     tickActive: '#c63fdc', // the first reached tick (magenta) ...
     tickFade: '#d4cad8', // ... fading into this one
@@ -51,6 +58,8 @@ const palette = {
     primaryStrong: '#5d4798',
     onPrimary: '#ffffff',
     accent: '#ff9c28',
+    accentCenter: '#f6a53a',
+    accentEdge: '#fdf47f',
     success: '#1effd6',
     warning: '#ff9c28',
     danger: '#ff3b62',
@@ -60,6 +69,11 @@ const palette = {
     dayFuture: '#565656',
     glow: 'rgba(207, 112, 213, 0.27)',
     glowStrong: 'rgba(207, 112, 213, 0.61)',
+    welcomeTop: '#7d3f96',
+    welcomeBottom: '#3f306b',
+    welcomeText: '#ffffff',
+    welcomeTextSoft: 'rgba(255, 255, 255, 0.5)',
+    welcomeDot: 'rgba(255, 255, 255, 0.5)',
     tickIdle: '#565656',
     tickActive: '#c63fdc',
     tickFade: '#cab9c9',
@@ -121,10 +135,17 @@ function useWebFont() {
   }, []);
 }
 
+/** `?scheme=dark|light` pins the look for a link (a design review of the dark frames); otherwise the device decides. */
+function initialMode(): ThemeMode {
+  if (Platform.OS !== 'web' || typeof window === 'undefined') return 'system';
+  const asked = new URLSearchParams(window.location.search).get('scheme');
+  return asked === 'dark' || asked === 'light' ? asked : 'system';
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useWebFont();
   const system = useColorScheme() === 'dark' ? 'dark' : 'light';
-  const [mode, setMode] = useState<ThemeMode>('system');
+  const [mode, setMode] = useState<ThemeMode>(initialMode);
   const resolved = mode === 'system' ? system : mode;
   const value = useMemo(
     () => ({ theme: { mode: resolved, colors: palette[resolved], ...tokens }, mode, setMode }),

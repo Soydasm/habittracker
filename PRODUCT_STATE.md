@@ -43,9 +43,10 @@ instead of adding a second way to do the same thing._
 | /register | `apps/web/app/register.tsx` | AuthForm, Screen, useI18n | no |
 | /settings | `apps/web/app/settings.tsx` | AppText, Button, Card, EmptyState, Screen, useAuth, useI18n, useMe, useTheme | yes |
 | /ui-kit | `apps/web/app/ui-kit.tsx` | AppText, Badge, Button, Card, EmptyState, Header, Input, Screen, useI18n, useTheme | no |
+| /welcome | `apps/web/app/welcome.tsx` | WelcomeScreen | no |
 
 ### Layouts (the chrome around routes)
-- `apps/web/app/_layout.tsx` — AppText, AuthProvider, BottomNav, HOME_ROUTE, Header, I18nProvider, LOGIN_ROUTE, REGISTER_ROUTE, SETTINGS_ROUTE, ThemeProvider, useAuth, useAuthGuard, useI18n, useTheme
+- `apps/web/app/_layout.tsx` — AppText, AuthProvider, BottomNav, HOME_ROUTE, Header, I18nProvider, LOGIN_ROUTE, REGISTER_ROUTE, SETTINGS_ROUTE, ThemeProvider, WELCOME_ROUTE, useAuth, useAuthGuard, useI18n, useTheme
 
 ### Shared components
 | component | file | used by |
