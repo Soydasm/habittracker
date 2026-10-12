@@ -2,7 +2,7 @@ from datetime import timedelta
 
 from django.contrib.postgres.aggregates import ArrayAgg
 from django.db import IntegrityError, transaction
-from django.db.models import Q
+from django.db.models import Prefetch, Q
 from django.utils import timezone
 
 from .models import Habit, HabitCheck
@@ -62,6 +62,28 @@ def _run_length(days):
         count += 1
         day -= timedelta(days=1)
     return count
+
+
+def weekly_summary(user):
+    """This week (Monday to Sunday, in the user's calendar): per habit, which of the 7 days are marked.
+
+    Two queries however many habits there are; marks outside the week are never read, so last week's do not count.
+    """
+    today = timezone.localdate()
+    monday = today - timedelta(days=today.weekday())
+    sunday = monday + timedelta(days=6)
+    week_checks = HabitCheck.objects.filter(day__range=(monday, sunday))
+    habits = (
+        Habit.objects.filter(owner=user, is_deleted=False)
+        .prefetch_related(Prefetch('checks', queryset=week_checks, to_attr='week_checks'))
+        .order_by('-created_at', 'id')
+    )
+    rows = []
+    for habit in habits:
+        marked = {check.day for check in habit.week_checks}
+        days = [(monday + timedelta(days=offset)) in marked for offset in range(7)]
+        rows.append({'id': habit.id, 'name': habit.name, 'days': days, 'done_count': sum(days)})
+    return {'week_start': monday, 'week_end': sunday, 'today': today, 'habits': rows}
 
 
 def check_habit(habit):
