@@ -21,7 +21,7 @@ export function EmptyState({ icon = 'sparkles-outline', title, body, actionTitle
         <Ionicons name={icon} size={26} color={theme.colors.primary} />
       </View>
       <AppText variant="heading" style={{ textAlign: 'center' }}>{title}</AppText>
-      {body ? <AppText muted style={{ textAlign: 'center', maxWidth: 420 }}>{body}</AppText> : null}
+      {body ? <AppText variant="small" muted style={{ textAlign: 'center', maxWidth: 420 }}>{body}</AppText> : null}
       {actionTitle && onAction ? <Button title={actionTitle} onPress={onAction} style={{ marginTop: theme.spacing.sm }} /> : null}
     </View>
   );

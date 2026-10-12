@@ -19,10 +19,11 @@ export function Screen({ title, subtitle, actions, children, scroll = true, test
     <View style={{ width: '100%', maxWidth: theme.maxContentWidth, alignSelf: 'center', padding: pad, gap: theme.spacing.lg }}>
       {title ? (
         <View style={{ flexDirection: wide ? 'row' : 'column', alignItems: wide ? 'center' : 'flex-start',
-          justifyContent: 'space-between', gap: theme.spacing.md }}>
+          justifyContent: 'space-between', gap: theme.spacing.md,
+          paddingHorizontal: theme.spacing.xl - pad }}>
           <View style={{ gap: theme.spacing.xs, flexShrink: 1 }}>
             <AppText variant="title" accessibilityRole="header">{title}</AppText>
-            {subtitle ? <AppText muted>{subtitle}</AppText> : null}
+            {subtitle ? <AppText variant="small" muted>{subtitle}</AppText> : null}
           </View>
           {actions ? <View style={{ flexDirection: 'row', gap: theme.spacing.sm }}>{actions}</View> : null}
         </View>
