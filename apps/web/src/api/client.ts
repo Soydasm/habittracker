@@ -11,6 +11,19 @@ export function setApiLocale(next: string) {
   locale = next;
 }
 
+let token = '';
+let onUnauthorized: (() => void) | null = null;
+
+/** The auth feature calls this on sign-in and sign-out: the one place a token is attached to requests. */
+export function setAuthToken(next: string | null) {
+  token = next ?? '';
+}
+
+/** Called when a request that carried a token is answered with 401 (the session expired or was revoked). */
+export function setUnauthorizedHandler(handler: (() => void) | null) {
+  onUnauthorized = handler;
+}
+
 export class ApiError extends Error {
   status: number;
   code: string;
@@ -29,6 +42,8 @@ type Envelope<T> = {
   data: T | null;
   message?: string;
   error?: { message?: string; error_code?: string; details?: unknown } | null;
+  /** The backend's ResponseDTO.error puts field errors here: {field: [{message, code}]}. */
+  errors?: Record<string, unknown> | null;
 };
 
 async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
@@ -39,6 +54,7 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
       headers: {
         'Content-Type': 'application/json',
         ...(locale ? { 'Accept-Language': locale } : {}),
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
         ...(init.headers ?? {}),
       },
     });
@@ -53,11 +69,12 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
     body = null;
   }
   if (!response.ok || !body?.success) {
+    if (response.status === 401 && token) onUnauthorized?.();
     throw new ApiError(
       body?.error?.message ?? body?.message ?? `HTTP ${response.status}`,
       response.status,
       body?.error?.error_code ?? '',
-      body?.error?.details ?? null,
+      body?.error?.details ?? body?.errors ?? null,
     );
   }
   return body.data as T;

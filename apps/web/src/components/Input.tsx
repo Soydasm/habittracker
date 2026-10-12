@@ -7,8 +7,12 @@ import { AppText } from './AppText';
  * A labelled field with its hint and its error under it. The design draws no field of its own, so it is built
  * from the design's card: the same surface, the 20 px radius and the text styles, with the violet as focus.
  */
-export function Input({ label, hint, error, style, onFocus, onBlur, ...rest }:
-  TextInputProps & { label?: string; hint?: string; error?: string | null }) {
+export function Input({ label, hint, error, style, onFocus, onBlur, inputRef, errorTestID, ...rest }:
+  TextInputProps & {
+    label?: string; hint?: string; error?: string | null;
+    /** To move focus to the field (the first one with an error after a failed submit). */
+    inputRef?: React.Ref<TextInput>; errorTestID?: string;
+  }) {
   const { theme } = useTheme();
   const [focused, setFocused] = useState(false);
   const border = error ? theme.colors.danger : focused ? theme.colors.primary : theme.colors.border;
@@ -16,6 +20,7 @@ export function Input({ label, hint, error, style, onFocus, onBlur, ...rest }:
     <View style={{ gap: theme.spacing.xs }}>
       {label ? <AppText variant="chip">{label}</AppText> : null}
       <TextInput
+        ref={inputRef}
         accessibilityLabel={label}
         placeholderTextColor={theme.colors.textMuted}
         onFocus={(e) => { setFocused(true); onFocus?.(e); }}
@@ -28,7 +33,7 @@ export function Input({ label, hint, error, style, onFocus, onBlur, ...rest }:
         }), style]}
         {...rest}
       />
-      {error ? <AppText variant="caption" style={{ color: theme.colors.danger }} accessibilityRole="alert">{error}</AppText>
+      {error ? <AppText variant="caption" style={{ color: theme.colors.danger }} accessibilityRole="alert" testID={errorTestID}>{error}</AppText>
         : hint ? <AppText variant="caption">{hint}</AppText> : null}
     </View>
   );
