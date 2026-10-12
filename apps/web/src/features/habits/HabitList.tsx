@@ -27,17 +27,20 @@ function Loading() {
 }
 
 /** "Alışkanlık silindi": the answer to the delete the user just confirmed, until they leave the screen. */
-function Notice({ text }: { text: string }) {
+function Notice({ text, failed, testID = 'home-notice' }: { text: string; failed?: boolean; testID?: string }) {
   const { theme } = useTheme();
   return (
     <View
-      testID="home-notice" accessibilityRole="alert"
+      testID={testID} accessibilityRole="alert"
       style={{
         flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm, padding: theme.spacing.md,
         borderRadius: theme.radius.md, backgroundColor: theme.colors.surface, ...theme.shadow.sm,
       }}
     >
-      <Ionicons name="checkmark-circle" size={24} color={theme.colors.success} />
+      <Ionicons
+        name={failed ? 'alert-circle' : 'checkmark-circle'} size={24}
+        color={failed ? theme.colors.danger : theme.colors.success}
+      />
       <AppText variant="chip" style={{ flex: 1 }}>{text}</AppText>
     </View>
   );
@@ -73,6 +76,7 @@ export function HabitList() {
       {deleted ? <Notice text={t('habits.home.deleted')} /> : null}
       <View style={{ width: '100%', maxWidth: wide ? 760 : 358, alignSelf: 'center', gap: theme.spacing.cozy }}>
         <DayStrip />
+        {habits.checkError ? <Notice testID="home-check-error" failed text={t('habits.check.error')} /> : null}
         {habits.status === 'failed' ? (
           <EmptyState
             testID="home-error" icon="alert-circle-outline" title={t('app.error')} body={t('habits.home.error.body')}
@@ -90,7 +94,9 @@ export function HabitList() {
             <View testID="home-list" style={{ flexDirection: 'row', flexWrap: 'wrap', gap: theme.spacing.cozy }}>
               {list.map((habit) => (
                 <View key={habit.id} style={{ width: wide ? '49%' : '100%' }}>
-                  <HabitCard habit={habit} onPress={() => router.push(habitRoute(habit.id))} />
+                  <HabitCard
+                    habit={habit} onPress={() => router.push(habitRoute(habit.id))} onToggle={() => habits.toggle(habit)}
+                  />
                 </View>
               ))}
             </View>

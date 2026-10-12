@@ -6,6 +6,7 @@
 import { LOCALES, type Locale } from '../config';
 import auth from './auth';
 import common from './common';
+import habitChecks from './habit-checks';
 import habits from './habits';
 import nav from './nav';
 import uiKit from './uiKit';
@@ -13,6 +14,7 @@ import uiKit from './uiKit';
 const features = [
   auth,
   common,
+  habitChecks,
   habits,
   nav,
   uiKit,
