@@ -124,7 +124,7 @@ test.describe('the habit list', () => {
 
   test('a visitor who is not signed in has no habit list, and /habits/new asks them to sign in', async ({ page }) => {
     await page.goto('/habits/new');
-    await expect(page.getByTestId('login-screen')).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByTestId('welcome-screen')).toBeVisible({ timeout: 30_000 });
   });
 });
 

@@ -54,5 +54,21 @@
       "apps/web/src/features/habits/HabitCard.tsx",
       "apps/web/src/features/habits/HabitList.tsx"
     ]
+  },
+  "S02": {
+    "route": "/welcome",
+    "files": [
+      "apps/web/app/welcome.tsx",
+      "apps/web/src/features/welcome/WelcomeScreen.tsx",
+      "apps/web/src/features/welcome/illustration.ts"
+    ]
+  },
+  "S05": {
+    "route": "/welcome?scheme=dark",
+    "files": [
+      "apps/web/app/welcome.tsx",
+      "apps/web/src/features/welcome/WelcomeScreen.tsx",
+      "apps/web/src/features/welcome/illustration.ts"
+    ]
   }
 }

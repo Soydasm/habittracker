@@ -40,9 +40,10 @@ instead of adding a second way to do the same thing._
 | /register | `apps/web/app/register.tsx` | AuthForm, Screen, useI18n | no |
 | /settings | `apps/web/app/settings.tsx` | AppText, Button, Card, EmptyState, Screen, useAuth, useI18n, useMe, useTheme | yes |
 | /ui-kit | `apps/web/app/ui-kit.tsx` | AppText, Badge, Button, Card, EmptyState, Header, Input, Screen, useI18n, useTheme | no |
+| /welcome | `apps/web/app/welcome.tsx` | WelcomeScreen | no |
 
 ### Layouts (the chrome around routes)
-- `apps/web/app/_layout.tsx` — AppText, AuthProvider, BottomNav, HOME_ROUTE, Header, I18nProvider, LOGIN_ROUTE, REGISTER_ROUTE, SETTINGS_ROUTE, ThemeProvider, useAuth, useAuthGuard, useI18n, useTheme
+- `apps/web/app/_layout.tsx` — AppText, AuthProvider, BottomNav, HOME_ROUTE, Header, I18nProvider, LOGIN_ROUTE, REGISTER_ROUTE, SETTINGS_ROUTE, ThemeProvider, WELCOME_ROUTE, useAuth, useAuthGuard, useI18n, useTheme
 
 ### Shared components
 | component | file | used by |
@@ -64,9 +65,10 @@ instead of adding a second way to do the same thing._
 - `apps/web/src/theme/index.tsx` — useTheme
 
 ### Tests
-- 0 python test files, 3 spec files
+- 0 python test files, 4 spec files
 
 ## Decisions
 - TASK-20261012-258852 — Design foundation: Tema, ortak bileşenler, gezinme kabuğu ve boş ana sayfa hazır. `pytest -q` (5 test), `npx tsc --noEmit` ve `npx playwright test` (5 test) geçti. Ekranlara 375, 390 ve 1440 px'te açık/koyu baktım. - **Tema:** `tokens.json _(TASK-20261012-258852, 2026-10-12)_
 - TASK-20261012-233064 — Kullanıcı kayıt olur, girer, çıkış yapar: Ana sayfada Giriş ve Kayıt'a giden bir bağlantı yoktu. Bu bir karar değil, eksikti. Üstteki başlık şeridinin sağına "Giriş yap" ve "Kayıt ol" bağlantıları ekledim. Bunlar yalnızca giriş yapmamış kullanıcıya görünüyor. -  _(TASK-20261012-233064, 2026-10-12)_
 - TASK-20261012-030386 — Kullanıcı alışkanlık ekler ve listesini görür: Alışkanlık ekle/listele/düzenle/sil akışı hazır; ancak platformun görsel kontrolü Figma S01/S06 için yine geçmeyecek. Bunun nedeni uygulama değil, kontrolün giriş yapma şekli. - **Kod:** Bu turda kodda değişiklik yapmadı _(TASK-20261012-030386, 2026-10-12)_
+- TASK-20261012-362936 — Yeni ziyaretçi karşılama ekranını görür: `main` ile birleştirme çözüldü ve üç kontrolün üçü de geçti, ama tek bir mevcut testin beklentisini değiştirmem gerekti (aşağıda). Bu oturumda onay verilmediği için, birleştirme sonrasında conflict marker kalmadığını gös _(TASK-20261012-362936, 2026-10-12)_

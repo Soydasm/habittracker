@@ -4,15 +4,15 @@ const style = (locator: Locator, property: string) =>
   locator.evaluate((el, name) => getComputedStyle(el).getPropertyValue(name), property);
 
 test.describe('the navigation shell and the home screen', () => {
-  test('the app name is at the top of an empty home screen and nothing links to /ui-kit', async ({ page }) => {
-    await page.goto('/');
+  test('the app name is at the top of the page and nothing links to /ui-kit', async ({ page }) => {
+    // a visitor's "/" is the welcome screen (no header), so the shell is looked at on a public screen with one
+    await page.goto('/login');
     await expect(page.getByTestId('app-header-name')).toBeVisible({ timeout: 30_000 });
     await expect(page.getByTestId('app-header-name')).toHaveText('Alışkanlık Takipçisi');
-    await expect(page.getByTestId('home-screen')).toBeVisible();
-    await expect(page.getByTestId('home-screen')).toBeEmpty();
+    await expect(page.getByTestId('login-screen')).toBeVisible();
     // the name is above the page, not below it
     const header = await page.getByTestId('app-header').boundingBox();
-    const home = await page.getByTestId('home-screen').boundingBox();
+    const home = await page.getByTestId('login-screen').boundingBox();
     expect(header && home && header.y < home.y).toBeTruthy();
     // no link anywhere (header, menu, home) points at the kit preview
     const hrefs = await page.getByRole('link').evaluateAll((links) => links.map((a) => a.getAttribute('href') ?? ''));
@@ -21,7 +21,7 @@ test.describe('the navigation shell and the home screen', () => {
   });
 
   test('the app speaks Turkish only: no language switcher', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/login');
     await expect(page.getByTestId('app-header-name')).toBeVisible({ timeout: 30_000 });
     await expect(page.getByTestId('language-switcher')).toHaveCount(0);
     await expect(page.locator('html')).toHaveAttribute('lang', 'tr');
