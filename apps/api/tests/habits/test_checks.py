@@ -139,3 +139,25 @@ def test_list_query_count_does_not_grow_with_habits(ada, django_assert_max_num_q
         response = client_for(ada).get(LIST)
     assert response.status_code == 200
     assert len(response.json()['data']['results']) == 5
+
+
+@pytest.mark.django_db
+def test_today_follows_the_istanbul_calendar_after_midnight(ada, habit):
+    from datetime import date, datetime, timezone as dt_timezone
+    from unittest import mock
+
+    just_after_istanbul_midnight = datetime(2026, 10, 11, 22, 30, tzinfo=dt_timezone.utc)  # 01:30 on 12 Oct in Istanbul
+    with mock.patch('django.utils.timezone.now', return_value=just_after_istanbul_midnight):
+        data = client_for(ada).post(check_url(habit)).json()['data']
+    assert data['checked_today'] is True
+    assert HabitCheck.objects.get(habit=habit).day == date(2026, 10, 12)
+
+
+@pytest.mark.django_db
+def test_streak_longer_than_the_list_window_stays_exact(ada, habit):
+    from apps.habits.services import WINDOW_DAYS
+
+    length = WINDOW_DAYS + 20
+    HabitCheck.objects.bulk_create(HabitCheck(habit=habit, day=timezone.localdate() - timedelta(days=n)) for n in range(length))
+    item = client_for(ada).get(LIST).json()['data']['results'][0]
+    assert item['streak'] == length

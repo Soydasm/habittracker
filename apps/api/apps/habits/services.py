@@ -8,10 +8,19 @@ from django.utils import timezone
 from .models import Habit, HabitCheck
 
 
+# The list query carries only the last WINDOW_DAYS of marks; a streak that reaches the window's edge is
+# counted again from the full history (see `streak_of`), so long streaks stay exact.
+WINDOW_DAYS = 45
+
+
+def _window_start():
+    return timezone.localdate() - timedelta(days=WINDOW_DAYS)
+
+
 def _with_check_days(queryset):
-    """Each habit carries its checked days (`check_days`) from the same query: a list costs no query per habit."""
+    """Each habit carries its recently checked days (`check_days`) from the same query: no query per habit."""
     return queryset.annotate(
-        check_days=ArrayAgg('checks__day', filter=Q(checks__day__isnull=False), default=[]),
+        check_days=ArrayAgg('checks__day', filter=Q(checks__day__gte=_window_start()), default=[]),
     )
 
 
@@ -20,10 +29,14 @@ def habits_of(user):
     return _with_check_days(Habit.objects.filter(owner=user, is_deleted=False)).order_by('-created_at', 'id')
 
 
+def _all_days(habit):
+    return set(habit.checks.values_list('day', flat=True))
+
+
 def _days(habit):
     days = getattr(habit, 'check_days', None)
     if days is None:  # a habit that did not come through `habits_of` (just created)
-        days = list(habit.checks.values_list('day', flat=True))
+        return _all_days(habit)
     return set(days)
 
 
@@ -34,6 +47,13 @@ def checked_today(habit):
 def streak_of(habit):
     """Consecutive checked days ending today — or ending yesterday while today is still open."""
     days = _days(habit)
+    count = _run_length(days)
+    if count >= WINDOW_DAYS:  # the run may continue before the window: count it from the full history
+        count = _run_length(_all_days(habit))
+    return count
+
+
+def _run_length(days):
     day = timezone.localdate()
     if day not in days:
         day -= timedelta(days=1)
