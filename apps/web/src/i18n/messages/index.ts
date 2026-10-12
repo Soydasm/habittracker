@@ -5,12 +5,10 @@
  */
 import { LOCALES, type Locale } from '../config';
 import common from './common';
-import home from './home';
 import uiKit from './uiKit';
 
 const features = [
   common,
-  home,
   uiKit,
 ] as const;
 

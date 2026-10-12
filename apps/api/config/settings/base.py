@@ -115,6 +115,6 @@ PROJECT_SLUG = 'alskanlk-takipcisi'
 # in it, so validation messages and e-mails reach the user in their language. Keep LANGUAGES and
 # LANGUAGE_CODE in step with LOCALES and DEFAULT_LOCALE in apps/web/src/i18n/config.ts.
 LANGUAGE_CODE = 'tr'
-LANGUAGES = [('tr', 'Türkçe'), ('en', 'English')]
+LANGUAGES = [('tr', 'Türkçe')]
 MIDDLEWARE.insert(MIDDLEWARE.index('django.contrib.sessions.middleware.SessionMiddleware') + 1,
                   'django.middleware.locale.LocaleMiddleware')
