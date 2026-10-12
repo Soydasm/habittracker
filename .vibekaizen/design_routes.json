@@ -1,0 +1,10 @@
+{
+  "S02": {
+    "route": "/welcome",
+    "files": ["apps/web/app/welcome.tsx", "apps/web/src/features/welcome/WelcomeScreen.tsx", "apps/web/src/features/welcome/illustration.ts"]
+  },
+  "S05": {
+    "route": "/welcome",
+    "files": ["apps/web/app/welcome.tsx", "apps/web/src/features/welcome/WelcomeScreen.tsx", "apps/web/src/features/welcome/illustration.ts"]
+  }
+}

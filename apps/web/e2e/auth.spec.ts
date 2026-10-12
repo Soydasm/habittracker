@@ -62,14 +62,14 @@ test.describe('register, sign in, sign out', () => {
     await expect(page.getByTestId('login-screen')).toBeVisible();
   });
 
-  test('opening Settings while signed out goes to the sign-in screen', async ({ page }) => {
+  test('opening Settings while signed out goes to the welcome screen', async ({ page }) => {
     await page.goto('/settings');
-    await expect(page.getByTestId('login-screen')).toBeVisible({ timeout: 30_000 });
-    await expect(page).toHaveURL(/\/login$/);
+    await expect(page.getByTestId('welcome-screen')).toBeVisible({ timeout: 30_000 });
+    await expect(page).toHaveURL(/\/welcome$/);
     await expect(page.getByTestId('app-nav')).toHaveCount(0);
   });
 
-  test('Settings shows the account e-mail; signing out returns to sign-in and Back does not reopen Settings', async ({ page, request }) => {
+  test('Settings shows the account e-mail; signing out returns to the welcome screen and Back does not reopen Settings', async ({ page, request }) => {
     const email = await createAccount(request);
     await signIn(page, email);
     await expect(page.getByTestId('home-screen')).toBeVisible({ timeout: 30_000 });
@@ -78,8 +78,8 @@ test.describe('register, sign in, sign out', () => {
     await expect(page.getByTestId('settings-email')).toHaveText(email);
 
     await page.getByTestId('settings-logout').click();
-    await expect(page.getByTestId('login-screen')).toBeVisible({ timeout: 30_000 });
-    await expect(page).toHaveURL(/\/login$/);
+    await expect(page.getByTestId('welcome-screen')).toBeVisible({ timeout: 30_000 });
+    await expect(page).toHaveURL(/\/welcome$/);
 
     await page.goBack();
     await expect(page.getByTestId('settings-screen')).toHaveCount(0);
@@ -95,6 +95,8 @@ test.describe('register, sign in, sign out', () => {
     await page.goto('/settings');
     await expect(page.getByTestId('settings-email')).toHaveText(email, { timeout: 30_000 });
     await page.getByTestId('settings-logout').click();
+    await expect(page.getByTestId('welcome-screen')).toBeVisible({ timeout: 30_000 });
+    await page.getByTestId('welcome-skip').click();
     await expect(page.getByTestId('login-screen')).toBeVisible();
     await page.getByTestId('login-email-input').fill(email);
     await page.getByTestId('login-password-input').fill(PASSWORD);
@@ -102,9 +104,9 @@ test.describe('register, sign in, sign out', () => {
     await expect(page.getByTestId('home-screen')).toBeVisible({ timeout: 30_000 });
   });
 
-  test('a visitor reaches sign-in and sign-up from the home screen header', async ({ page }) => {
-    await page.goto('/');
-    await expect(page.getByTestId('home-screen')).toBeVisible({ timeout: 30_000 });
+  test('a visitor reaches sign-in and sign-up from the header', async ({ page }) => {
+    await page.goto('/login');
+    await expect(page.getByTestId('login-screen')).toBeVisible({ timeout: 30_000 });
     await page.getByTestId('app-header-register').click();
     await expect(page.getByTestId('register-screen')).toBeVisible({ timeout: 30_000 });
     await page.getByTestId('app-header-login').click();

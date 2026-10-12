@@ -1,9 +1,9 @@
 import React from 'react';
 import { Pressable, View } from 'react-native';
-import { Link, Stack } from 'expo-router';
+import { Link, Stack, usePathname } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AppText, BottomNav, Header, type NavItem } from '../src/components';
-import { AuthProvider, HOME_ROUTE, LOGIN_ROUTE, REGISTER_ROUTE, SETTINGS_ROUTE, useAuth, useAuthGuard } from '../src/features/auth';
+import { AuthProvider, HOME_ROUTE, LOGIN_ROUTE, REGISTER_ROUTE, SETTINGS_ROUTE, WELCOME_ROUTE, useAuth, useAuthGuard } from '../src/features/auth';
 import { I18nProvider, useI18n } from '../src/i18n';
 import { ThemeProvider, useTheme } from '../src/theme';
 
@@ -47,18 +47,21 @@ const NAV_ITEMS: readonly NavItem[] = [
   { href: SETTINGS_ROUTE, label: 'nav.settings', icon: 'settings-outline', testID: 'app-nav-settings' },
 ];
 
-/** The navigation shell: the header with the app name above every screen, the tabs below when signed in. */
+/** The navigation shell: the header with the app name above every screen, the tabs below when signed in. The welcome screen is full-bleed and draws no header. */
 function Shell() {
   const { theme } = useTheme();
   const { status } = useAuth();
   useAuthGuard();
+  const welcome = usePathname() === WELCOME_ROUTE;
   return (
     <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
-      <Header
-        titleSlot={<AppName />} actionSlot={status === 'signedOut' ? <GuestLinks /> : null} testID="app-header"
-      />
+      {welcome ? null : (
+        <Header
+          titleSlot={<AppName />} actionSlot={status === 'signedOut' ? <GuestLinks /> : null} testID="app-header"
+        />
+      )}
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: theme.colors.background } }} />
-      {status === 'signedIn' ? <BottomNav items={NAV_ITEMS} /> : null}
+      {status === 'signedIn' && !welcome ? <BottomNav items={NAV_ITEMS} /> : null}
     </View>
   );
 }

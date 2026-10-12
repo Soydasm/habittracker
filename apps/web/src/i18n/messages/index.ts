@@ -8,12 +8,14 @@ import auth from './auth';
 import common from './common';
 import nav from './nav';
 import uiKit from './uiKit';
+import welcome from './welcome';
 
 const features = [
   auth,
   common,
   nav,
   uiKit,
+  welcome,
 ] as const;
 
 type KeysOf<F> = F extends Record<Locale, Record<infer K, string>> ? K : never;

@@ -31,6 +31,11 @@ const palette = {
     dayFuture: '#a0a0a0', // a day chip still ahead
     glow: 'rgba(207, 112, 213, 0.27)', // decorative bubbles
     glowStrong: 'rgba(207, 112, 213, 0.61)',
+    welcomeTop: '#d089ed', // the Start screen's gradient, top and bottom
+    welcomeBottom: '#8f72f7',
+    welcomeText: '#ffffff', // text on that gradient
+    welcomeTextSoft: '#ffffff',
+    welcomeDot: 'rgba(255, 255, 255, 0.5)',
   },
   dark: {
     background: '#2b2630',
@@ -52,6 +57,11 @@ const palette = {
     dayFuture: '#565656',
     glow: 'rgba(207, 112, 213, 0.27)',
     glowStrong: 'rgba(207, 112, 213, 0.61)',
+    welcomeTop: '#7d3f96',
+    welcomeBottom: '#3f306b',
+    welcomeText: '#ffffff',
+    welcomeTextSoft: 'rgba(255, 255, 255, 0.5)',
+    welcomeDot: 'rgba(255, 255, 255, 0.5)',
   },
 };
 
