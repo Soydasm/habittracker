@@ -1,0 +1,32 @@
+import { defineMessages } from '../define';
+
+export default defineMessages({
+  tr: {
+    'auth.login.title': 'Giriş yap',
+    'auth.login.subtitle': 'Alışkanlıklarına kaldığın yerden devam et.',
+    'auth.login.submit': 'Giriş yap',
+    'auth.login.switchPrompt': 'Hesabın yok mu?',
+    'auth.login.switchLink': 'Kayıt ol',
+    'auth.register.title': 'Kayıt ol',
+    'auth.register.subtitle': 'E-posta ve şifrenle hesabını aç.',
+    'auth.register.submit': 'Kayıt ol',
+    'auth.register.switchPrompt': 'Zaten hesabın var mı?',
+    'auth.register.switchLink': 'Giriş yap',
+    'auth.email.label': 'E-posta',
+    'auth.email.placeholder': 'ornek@eposta.com',
+    'auth.password.label': 'Şifre',
+    'auth.password.hint': 'En az 8 karakter',
+    'auth.error.emailRequired': 'E-posta adresini yaz.',
+    'auth.error.emailInvalid': 'Geçerli bir e-posta adresi yaz.',
+    'auth.error.emailTaken': 'Bu e-posta kullanımda.',
+    'auth.error.passwordRequired': 'Şifreni yaz.',
+    'auth.error.passwordShort': 'Şifre en az 8 karakter olmalı.',
+    'auth.error.invalidCredentials': 'E-posta veya şifre hatalı.',
+    'auth.error.tooMany': 'Çok fazla deneme yaptın. Biraz bekleyip tekrar dene.',
+    'auth.error.generic': 'Bir şeyler ters gitti. Lütfen tekrar dene.',
+    'auth.settings.title': 'Ayarlar',
+    'auth.settings.account': 'Hesap',
+    'auth.settings.email': 'E-posta',
+    'auth.settings.logout': 'Çıkış yap',
+  },
+});

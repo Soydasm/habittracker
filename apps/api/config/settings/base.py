@@ -118,3 +118,10 @@ LANGUAGE_CODE = 'tr'
 LANGUAGES = [('tr', 'Türkçe')]
 MIDDLEWARE.insert(MIDDLEWARE.index('django.contrib.sessions.middleware.SessionMiddleware') + 1,
                   'django.middleware.locale.LocaleMiddleware')
+
+# --- auth: a session lasts a week (the web app keeps the access token; there is no silent refresh yet), and
+# the pre-login endpoints (register, login) are rate limited per client address.
+from datetime import timedelta  # noqa: E402
+
+SIMPLE_JWT = {'ACCESS_TOKEN_LIFETIME': timedelta(days=7)}
+REST_FRAMEWORK['DEFAULT_THROTTLE_RATES'] = {'auth': '60/minute'}

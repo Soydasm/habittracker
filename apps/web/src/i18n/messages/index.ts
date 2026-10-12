@@ -4,11 +4,15 @@
  * tasks building at the same time do not edit the same lines.
  */
 import { LOCALES, type Locale } from '../config';
+import auth from './auth';
 import common from './common';
+import nav from './nav';
 import uiKit from './uiKit';
 
 const features = [
+  auth,
   common,
+  nav,
   uiKit,
 ] as const;
 

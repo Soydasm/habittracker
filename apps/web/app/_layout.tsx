@@ -2,7 +2,8 @@ import React from 'react';
 import { Pressable, View } from 'react-native';
 import { Link, Stack } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { AppText, Header } from '../src/components';
+import { AppText, BottomNav, Header, type NavItem } from '../src/components';
+import { AuthProvider, HOME_ROUTE, SETTINGS_ROUTE, useAuth, useAuthGuard } from '../src/features/auth';
 import { I18nProvider, useI18n } from '../src/i18n';
 import { ThemeProvider, useTheme } from '../src/theme';
 
@@ -19,13 +20,22 @@ function AppName() {
   );
 }
 
-/** The navigation shell: the header with the app name above every screen. */
+/** The tabs of a signed-in user. Weekly summary joins when its screen exists. */
+const NAV_ITEMS: readonly NavItem[] = [
+  { href: HOME_ROUTE, label: 'nav.list', icon: 'list-outline', testID: 'app-nav-list' },
+  { href: SETTINGS_ROUTE, label: 'nav.settings', icon: 'settings-outline', testID: 'app-nav-settings' },
+];
+
+/** The navigation shell: the header with the app name above every screen, the tabs below when signed in. */
 function Shell() {
   const { theme } = useTheme();
+  const { status } = useAuth();
+  useAuthGuard();
   return (
     <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <Header titleSlot={<AppName />} testID="app-header" />
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: theme.colors.background } }} />
+      {status === 'signedIn' ? <BottomNav items={NAV_ITEMS} /> : null}
     </View>
   );
 }
@@ -35,7 +45,9 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <ThemeProvider>
         <I18nProvider>
-          <Shell />
+          <AuthProvider>
+            <Shell />
+          </AuthProvider>
         </I18nProvider>
       </ThemeProvider>
     </SafeAreaProvider>
