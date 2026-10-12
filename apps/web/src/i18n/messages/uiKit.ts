@@ -1,0 +1,36 @@
+import { defineMessages } from '../define';
+
+export default defineMessages({
+  tr: {
+    'uiKit.title': 'Arayüz kiti',
+    'uiKit.subtitle': 'Geçerli temadaki tüm bileşenler. Uygulamanın bir ekranı değildir.',
+    'uiKit.colors': 'Renkler',
+    'uiKit.text': 'Yazı',
+    'uiKit.buttons': 'Butonlar',
+    'uiKit.inputs': 'Form alanları',
+    'uiKit.badges': 'Rozetler',
+    'uiKit.cards': 'Kart ve boş durum',
+    'uiKit.formats': 'Sayı, para ve tarih',
+    'uiKit.sample': 'Örnek metin',
+    'uiKit.sampleHint': 'Yardım metni',
+    'uiKit.sampleError': 'Hata metni',
+    'uiKit.sampleItems.one': '{{count}} öğe',
+    'uiKit.sampleItems.other': '{{count}} öğe',
+  },
+  en: {
+    'uiKit.title': 'UI kit',
+    'uiKit.subtitle': 'Every component in the current theme. Not a screen of the app.',
+    'uiKit.colors': 'Colours',
+    'uiKit.text': 'Text',
+    'uiKit.buttons': 'Buttons',
+    'uiKit.inputs': 'Inputs',
+    'uiKit.badges': 'Badges',
+    'uiKit.cards': 'Card and empty state',
+    'uiKit.formats': 'Numbers, money and dates',
+    'uiKit.sample': 'Sample text',
+    'uiKit.sampleHint': 'Help text',
+    'uiKit.sampleError': 'Error text',
+    'uiKit.sampleItems.one': '{{count}} item',
+    'uiKit.sampleItems.other': '{{count}} items',
+  },
+});

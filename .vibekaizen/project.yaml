@@ -1,0 +1,78 @@
+scaffold: django-expo@1.0
+parts:
+  api:
+    dir: apps/api
+    install: pip install -r requirements/development.txt
+    migrate: python manage.py migrate --noinput
+    start: python manage.py runserver 0.0.0.0:8000
+    health: /healthz/
+    lint: python manage.py check
+    test: pytest -q
+  web:
+    dir: apps/web
+    install: npm install --no-audit --no-fund
+    start: npx expo start --web --port 8082
+    health: /
+    test: npx tsc --noEmit
+    e2e: npx playwright test
+ports:
+  api: 8000
+  web: 8081
+env:
+- name: DATABASE_URL
+  scope: api
+  secret: true
+  provided_by: platform
+  envs:
+  - development
+  - staging
+  - production
+- name: DB_NAME
+  scope: api
+  secret: false
+  provided_by: platform
+  envs:
+  - development
+  - staging
+  - production
+- name: DB_USER
+  scope: api
+  secret: false
+  provided_by: platform
+  envs:
+  - development
+  - staging
+  - production
+- name: DB_PASSWORD
+  scope: api
+  secret: true
+  provided_by: platform
+  envs:
+  - development
+  - staging
+  - production
+- name: SECRET_KEY
+  scope: api
+  secret: true
+  provided_by: platform
+  envs:
+  - development
+  - staging
+  - production
+- name: ALLOWED_HOSTS
+  scope: api
+  secret: false
+  provided_by: platform
+  envs:
+  - development
+  - staging
+  - production
+- name: EXPO_PUBLIC_API_URL
+  scope: web
+  secret: false
+  provided_by: platform
+  envs:
+  - development
+  - staging
+  - production
+slug: alskanlk-takipcisi

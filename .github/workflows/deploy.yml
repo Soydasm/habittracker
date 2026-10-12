@@ -1,0 +1,59 @@
+# Deploy a released version: the tag the founder's sprint approval creates.
+#
+# Not on push to main. Every task that passes UAT is merged to main straight away,
+# and the version is cut once per sprint when the founder approves it — deploying
+# main would ship each task the moment it merged and make that approval decorative.
+#
+# Inert until a deploy target is set: the job only runs when the repository
+# variable DEPLOY_TARGET is `flyio`, so a project that is not live yet never has a
+# red build. The Go-live package fills this in (fly.toml + FLY_API_TOKEN), or the
+# last step is replaced with whatever this product actually deploys to.
+#
+# The migration runs as fly.toml's `release_command`, before the new version
+# serves traffic — so a failed migration fails the deploy instead of leaving new
+# code on an old schema.
+name: Deploy
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env: { POSTGRES_USER: app, POSTGRES_PASSWORD: app, POSTGRES_DB: app }
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U app" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgres://app:app@localhost:5432/app
+      SECRET_KEY: ci-secret
+      DEBUG: 'False'
+      ALLOWED_HOSTS: '*'
+    defaults:
+      run: { working-directory: apps/api }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install -r requirements/development.txt
+      - run: python manage.py migrate --noinput
+      - run: pytest -q
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: ${{ vars.DEPLOY_TARGET == 'flyio' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
