@@ -9,6 +9,8 @@ instead of adding a second way to do the same thing._
 ### API surface
 | method | path | view | permission | file |
 |---|---|---|---|---|
+| — |  | HabitListView.as_view | IsAuthenticated | `apps/api/apps/habits/urls.py` |
+| — | <uuid:pk>/ | HabitDetailView.as_view | IsAuthenticated | `apps/api/apps/habits/urls.py` |
 | — | register/ | RegisterView.as_view | AllowAny | `apps/api/apps/users/urls.py` |
 | — | login/ | LoginView.as_view | AllowAny | `apps/api/apps/users/urls.py` |
 | — | me/ | MeView.as_view | IsAuthenticated | `apps/api/apps/users/urls.py` |
@@ -17,19 +19,23 @@ instead of adding a second way to do the same thing._
 | — | healthz/ | HealthView.as_view | AllowAny | `apps/api/config/urls.py` |
 | — | api/v1/hello/ | HelloView.as_view | AllowAny | `apps/api/config/urls.py` |
 | — | api/v1/auth/ | include | — | `apps/api/config/urls.py` |
+| — | api/v1/habits/ | include | — | `apps/api/config/urls.py` |
 
 ### Data models
 - `AbstractModel` (4 fields) — `apps/api/apps/core/models.py`
+- `Habit` (2 fields) — `apps/api/apps/habits/models.py`
 
 ### Tests
-- 4 python test files, 0 spec files
+- 5 python test files, 0 spec files
 
 ## Part `web` (`apps/web`)
 
 ### Routes
 | url | file | builds on | auth |
 |---|---|---|---|
-| / | `apps/web/app/index.tsx` | Screen | no |
+| /habits/:id | `apps/web/app/habits/[id].tsx` | DeleteHabit, EmptyState, HabitForm, Screen, useAuth, useHabit, useI18n, useTheme | yes |
+| /habits/new | `apps/web/app/habits/new.tsx` | HabitForm, Screen, useI18n | no |
+| / | `apps/web/app/index.tsx` | HabitList, Screen, useAuth | yes |
 | /login | `apps/web/app/login.tsx` | AuthForm, Screen, useI18n | no |
 | /register | `apps/web/app/register.tsx` | AuthForm, Screen, useI18n | no |
 | /settings | `apps/web/app/settings.tsx` | AppText, Button, Card, EmptyState, Screen, useAuth, useI18n, useMe, useTheme | yes |
@@ -47,10 +53,11 @@ instead of adding a second way to do the same thing._
 | BottomNav | `apps/web/src/components/BottomNav.tsx` | **nothing yet** |
 | Button | `apps/web/src/components/Button.tsx` | /settings, /ui-kit, EmptyState |
 | Card | `apps/web/src/components/Card.tsx` | /settings, /ui-kit |
-| EmptyState | `apps/web/src/components/EmptyState.tsx` | /settings, /ui-kit |
+| EmptyState | `apps/web/src/components/EmptyState.tsx` | /habits/:id, /settings, /ui-kit |
+| Graphic | `apps/web/src/components/Graphic.tsx` | **nothing yet** |
 | Header | `apps/web/src/components/Header.tsx` | /ui-kit |
 | Input | `apps/web/src/components/Input.tsx` | /ui-kit |
-| Screen | `apps/web/src/components/Screen.tsx` | /, /login, /register, /settings, /ui-kit |
+| Screen | `apps/web/src/components/Screen.tsx` | /, /habits/:id, /habits/new, /login, /register, /settings, /ui-kit |
 
 ### Providers (read data and styling from these, never hardcode)
 - `apps/web/src/features/auth/AuthContext.tsx` — useAuth
