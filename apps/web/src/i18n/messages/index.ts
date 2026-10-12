@@ -10,6 +10,7 @@ import habitChecks from './habit-checks';
 import habits from './habits';
 import nav from './nav';
 import uiKit from './uiKit';
+import weekly from './weekly';
 import welcome from './welcome';
 
 const features = [
@@ -19,6 +20,7 @@ const features = [
   habits,
   nav,
   uiKit,
+  weekly,
   welcome,
 ] as const;
 

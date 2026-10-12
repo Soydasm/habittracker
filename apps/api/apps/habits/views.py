@@ -6,7 +6,7 @@ from apps.core.dto import ResponseDTO
 from apps.core.pagination import StandardPagination
 from apps.users.serializers import coded_errors
 from . import services
-from .serializers import HabitSerializer
+from .serializers import HabitSerializer, WeeklySummarySerializer
 
 
 def _not_found():
@@ -33,6 +33,14 @@ class HabitListView(APIView):
             return ResponseDTO.error('Validation failed', coded_errors(serializer))
         habit = services.create_habit(request.user, serializer.validated_data['name'])
         return ResponseDTO.success('Habit created', HabitSerializer(habit).data, status_code=status.HTTP_201_CREATED)
+
+
+class WeeklySummaryView(APIView):
+    """This week's marks for the signed-in user's habits: 7 booleans (Monday first) and the count per habit."""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return ResponseDTO.success('Weekly summary', WeeklySummarySerializer(services.weekly_summary(request.user)).data)
 
 
 class HabitCheckView(APIView):

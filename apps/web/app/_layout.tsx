@@ -4,6 +4,7 @@ import { Link, Stack, usePathname } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AppText, BottomNav, Header, type NavItem } from '../src/components';
 import { AuthProvider, HOME_ROUTE, LOGIN_ROUTE, REGISTER_ROUTE, SETTINGS_ROUTE, WELCOME_ROUTE, useAuth, useAuthGuard } from '../src/features/auth';
+import { WEEKLY_ROUTE } from '../src/features/weekly';
 import { I18nProvider, useI18n } from '../src/i18n';
 import { ThemeProvider, useTheme } from '../src/theme';
 
@@ -41,9 +42,10 @@ function GuestLinks() {
   );
 }
 
-/** The tabs of a signed-in user. Weekly summary joins when its screen exists. */
+/** The tabs of a signed-in user. */
 const NAV_ITEMS: readonly NavItem[] = [
   { href: HOME_ROUTE, label: 'nav.list', icon: 'list-outline', testID: 'app-nav-list' },
+  { href: WEEKLY_ROUTE, label: 'nav.weekly', icon: 'calendar-outline', testID: 'app-nav-weekly' },
   { href: SETTINGS_ROUTE, label: 'nav.settings', icon: 'settings-outline', testID: 'app-nav-settings' },
 ];
 
