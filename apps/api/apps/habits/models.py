@@ -15,3 +15,16 @@ class Habit(AbstractModel):
 
     def __str__(self):
         return self.name
+
+
+class HabitCheck(AbstractModel):
+    """Habit done on `day`. Un-checking deletes the row (the one hard delete here), so a plain unique pair is enough."""
+    habit = models.ForeignKey(Habit, on_delete=models.CASCADE, related_name='checks')
+    day = models.DateField()
+
+    class Meta:
+        ordering = ['-day']
+        constraints = [models.UniqueConstraint(fields=['habit', 'day'], name='habitcheck_one_per_day')]
+
+    def __str__(self):
+        return f'{self.habit_id} {self.day}'

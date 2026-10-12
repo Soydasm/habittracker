@@ -6,4 +6,6 @@ export const fetchHabits = () => api.get<Page<Habit>>('/api/v1/habits/?page_size
 export const fetchHabit = (id: string) => api.get<Habit>(`/api/v1/habits/${id}/`);
 export const createHabit = (name: string) => api.post<Habit>('/api/v1/habits/', { name });
 export const renameHabit = (id: string, name: string) => api.patch<Habit>(`/api/v1/habits/${id}/`, { name });
+export const checkHabit = (id: string) => api.post<Habit>(`/api/v1/habits/${id}/check/`, {});
+export const uncheckHabit = (id: string) => api.post<Habit>(`/api/v1/habits/${id}/uncheck/`, {});
 export const deleteHabit = (id: string) => api.delete<Record<string, never>>(`/api/v1/habits/${id}/`);

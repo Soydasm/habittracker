@@ -35,6 +35,28 @@ class HabitListView(APIView):
         return ResponseDTO.success('Habit created', HabitSerializer(habit).data, status_code=status.HTTP_201_CREATED)
 
 
+class HabitCheckView(APIView):
+    """Marks today done for one habit. Idempotent; someone else's habit answers 404."""
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        habit = services.habits_of(request.user).filter(pk=pk).first()
+        if habit is None:
+            return _not_found()
+        return ResponseDTO.success('Habit checked', HabitSerializer(services.check_habit(habit)).data)
+
+
+class HabitUncheckView(APIView):
+    """Takes today's mark back. Idempotent; someone else's habit answers 404."""
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        habit = services.habits_of(request.user).filter(pk=pk).first()
+        if habit is None:
+            return _not_found()
+        return ResponseDTO.success('Habit unchecked', HabitSerializer(services.uncheck_habit(habit)).data)
+
+
 class HabitDetailView(APIView):
     """One habit of the signed-in user. Someone else's habit answers 404, as if it did not exist."""
     permission_classes = [IsAuthenticated]
