@@ -41,10 +41,14 @@ export function AchievementCard({ points }: { points: number }) {
       </View>
       <View style={{ position: 'absolute', right: BADGE_RIGHT, top: BADGE_TOP, width: BADGE.size, height: BADGE.size }}>
         <Graphic svg={hexagonSvg} width={BADGE.size} height={BADGE.size} style={{ position: 'absolute', left: 0, top: 0 }} />
-        <Graphic
-          svg={outlineSvg} width={BADGE.outline.size} height={BADGE.outline.size}
-          style={{ position: 'absolute', left: BADGE.outline.offset, top: BADGE.outline.offset }}
-        />
+        <View
+          style={{
+            position: 'absolute', left: BADGE.outline.offset, top: BADGE.outline.offset, width: BADGE.outline.size,
+            height: BADGE.outline.size,
+          }}
+        >
+          <Graphic svg={outlineSvg} width={BADGE.outline.size} height={BADGE.outline.size} />
+        </View>
         {light(BADGE.cyan, theme.colors.badgeCyan)}
         {light(BADGE.yellow, theme.colors.badgeYellow)}
         <Graphic

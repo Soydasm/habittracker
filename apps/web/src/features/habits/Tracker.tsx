@@ -81,9 +81,11 @@ export function Tracker({ count, days }: { count: number | null; days?: number }
             key={shade.color}
             style={{
               position: 'absolute', left: shade.left, top: shade.top, width: shade.size, height: shade.size,
-              borderRadius: theme.radius.pill, backgroundColor: colors[shade.color], filter: `blur(${BLUR / 2}px)`,
+              filter: `blur(${BLUR / 2}px)`,
             }}
-          />
+          >
+            <Graphic svg={disc(shade.size, colors[shade.color])} width={shade.size} height={shade.size} />
+          </View>
         ))}
         {ticks.map((tick) => (
           <View key={tick.angle} style={{
