@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import { Modal, Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { AppText, Button, Graphic } from '../../../src/components';
 import { AchievementBadge } from '../../../src/features/home';
@@ -33,7 +33,8 @@ export function AchievementModal({ days, onClose }: { days: number; onClose: () 
     return () => cancelAnimationFrame(frame);
   }, []);
 
-  useEffect(() => {
+  // A layout effect: the listener is on before the sheet is first painted, so an Esc pressed at once is not lost.
+  useLayoutEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose();
     };
