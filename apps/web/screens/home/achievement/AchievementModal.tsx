@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Modal, Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { AppText, Button, Graphic } from '../../../src/components';
 import { AchievementBadge } from '../../../src/features/home';
@@ -17,6 +17,8 @@ const SHEET_MAX = 480;
 const ART_SHIFT = 26;
 /** Its "Yay!" is centred 2.5 px left of the pill's middle. */
 const LABEL_SHIFT = 5;
+/** The keyboard focus ring: a white line inside the pill's edge. */
+const FOCUS_RING = { inset: 3, width: 2 };
 
 /**
  * The celebration the design draws as "2.2 Main": a bottom sheet over the home screen with the unlocked badge, the
@@ -30,13 +32,15 @@ export function AchievementModal({ days, onClose }: { days: number; onClose: () 
   const { width } = useWindowDimensions();
   const wide = width >= theme.breakpoint;
   const dismiss = useRef<View>(null);
+  // The ring around the pill shows once the keyboard is in use (Tab), not on the focus the sheet gives on opening.
+  const [keyboard, setKeyboard] = useState(false);
 
   useEffect(() => {
     // The portal mounts the sheet after this effect's first run: focus the button once it is there.
     const frame = requestAnimationFrame(() => {
       const button = dismiss.current;
       if (!button) return;
-      // The design draws the pill without a ring; the button is the sheet's only control, so the focus is clear.
+      // The browser's own ring is replaced by the one drawn below, so it can follow the design's pill.
       if (button instanceof HTMLElement) button.style.outline = 'none';
       button.focus();
     });
@@ -47,9 +51,20 @@ export function AchievementModal({ days, onClose }: { days: number; onClose: () 
   useLayoutEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose();
+      else if (event.key === 'Tab') {
+        // The button is the sheet's only control: Tab keeps the focus on it instead of leaving the dialog.
+        event.preventDefault();
+        dismiss.current?.focus();
+        setKeyboard(true);
+      } else setKeyboard(true);
     };
+    const onPointer = () => setKeyboard(false);
     document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
+    document.addEventListener('pointerdown', onPointer);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('pointerdown', onPointer);
+    };
   }, [onClose]);
 
   const title = t('home.unlocked.title');
@@ -133,6 +148,16 @@ export function AchievementModal({ days, onClose }: { days: number; onClose: () 
                 ref={dismiss} testID="home-achievement-dismiss" title={t('home.unlocked.dismiss')} onPress={onClose}
                 style={{ backgroundColor: 'transparent', paddingTop: 2, paddingRight: theme.spacing.xl + LABEL_SHIFT }}
               />
+              {keyboard ? (
+                <View
+                  testID="home-achievement-focus-ring" pointerEvents="none"
+                  style={{
+                    position: 'absolute', top: FOCUS_RING.inset, bottom: FOCUS_RING.inset, left: FOCUS_RING.inset,
+                    right: FOCUS_RING.inset, borderRadius: theme.radius.xl, borderWidth: FOCUS_RING.width,
+                    borderColor: theme.colors.onPrimary,
+                  }}
+                />
+              ) : null}
             </View>
           </View>
         </View>

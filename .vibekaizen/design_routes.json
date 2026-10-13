@@ -46,7 +46,7 @@
     ]
   },
   "S04": {
-    "route": "/?celebration=off",
+    "route": "/",
     "setup": "python apps/api/manage.py seed_main_state",
     "files": [
       "apps/web/src/features/habits/Tracker.tsx",

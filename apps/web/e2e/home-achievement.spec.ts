@@ -91,6 +91,17 @@ test.describe('the 200-day celebration', () => {
     await expect(page.getByTestId('home-tracker-count')).toHaveText('200');
   });
 
+  test('shows a focus ring on the "Yay!" button only once the keyboard is used', async ({ page, request }) => {
+    const { token } = await setup(request);
+    await mockRecords(page, records(200, -1));
+    await open(page, token);
+    await expect(page.getByTestId('home-achievement-dismiss')).toBeFocused({ timeout: 30_000 });
+    await expect(page.getByTestId('home-achievement-focus-ring')).toHaveCount(0);
+    await page.keyboard.press('Tab');
+    await expect(page.getByTestId('home-achievement-focus-ring')).toBeVisible();
+    await expect(page.getByTestId('home-achievement-dismiss')).toBeFocused();
+  });
+
   test('a tap on the background closes it', async ({ page, request }) => {
     const { token } = await setup(request);
     await mockRecords(page, records(200, -1));
