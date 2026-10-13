@@ -49,8 +49,14 @@ async function mockRecords(page: Page, check_days: string[]) {
   });
 }
 
+/** Signs in as a user who has already closed the 200-day celebration, so these tests see the home under it. */
 async function signIn(page: Page, token: string) {
-  await page.addInitScript((value) => window.localStorage.setItem('auth.token', value), token);
+  const me = await page.request.get('/api/v1/auth/me/', { headers: { Authorization: `Bearer ${token}` } });
+  const id = (await me.json()).data.id as string;
+  await page.addInitScript(([value, key]) => {
+    window.localStorage.setItem('auth.token', value);
+    window.localStorage.setItem(key, '1');
+  }, [token, `home:achievement-dismissed:200:${id}`]);
   await page.goto('/');
   await expect(page.getByTestId('home-screen')).toBeVisible({ timeout: 30_000 });
 }

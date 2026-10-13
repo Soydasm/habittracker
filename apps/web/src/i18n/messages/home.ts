@@ -9,5 +9,8 @@ export default defineMessages({
     'home.points.other': '{{count}} puan',
     'home.achievement.title': 'Sıradaki başarı:',
     'home.achievement.goal': '{{days}} gün',
+    'home.unlocked.title': 'Başarı kilidi açıldı!',
+    'home.unlocked.days': '{{days}} gün',
+    'home.unlocked.dismiss': 'Yaşasın!',
   },
 });
