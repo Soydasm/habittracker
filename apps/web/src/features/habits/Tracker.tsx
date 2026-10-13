@@ -52,9 +52,10 @@ function mix(from: string, to: string, step: number) {
 
 /**
  * The round tracker above the list, drawn from the design: the dashed ring (the first half lit magenta, fading
- * out), the round face in the middle and the soft bubbles around it. The face carries the number of habits.
+ * out), the round face in the middle and the soft bubbles around it. The face carries the number of habits — or,
+ * with `days`, the streak in days (the home screen's "next achievement" state).
  */
-export function Tracker({ count }: { count: number | null }) {
+export function Tracker({ count, days }: { count: number | null; days?: number }) {
   const { theme } = useTheme();
   const { t, tn, format } = useI18n();
   const { width } = useWindowDimensions();
@@ -67,7 +68,8 @@ export function Tracker({ count }: { count: number | null }) {
   const centred = { position: 'absolute', alignItems: 'center', justifyContent: 'center' } as const;
   return (
     <View
-      testID="home-tracker" accessible accessibilityLabel={count === null ? t('habits.home.loading') : tn('habits.count', count)}
+      testID="home-tracker" accessible accessibilityLabel={days !== undefined ? tn('home.streak', days)
+        : count === null ? t('habits.home.loading') : tn('habits.count', count)}
       style={{ width: Math.min(WIDTH, width), height: HEIGHT, alignSelf: 'center' }}
     >
       {BUBBLES.map((bubble) => (
@@ -98,9 +100,9 @@ export function Tracker({ count }: { count: number | null }) {
           <View style={[centred, { position: 'relative', width: FACE, height: FACE, borderRadius: theme.radius.pill,
             backgroundColor: colors.disc }]}>
             <AppText variant="display" testID="home-tracker-count" style={{ textAlign: 'center' }}>
-              {count === null ? '–' : format.number(count)}
+              {days !== undefined ? format.number(days) : count === null ? '–' : format.number(count)}
             </AppText>
-            <AppText variant="label" style={{ textAlign: 'center' }}>{t('habits.tracker.label')}</AppText>
+            <AppText variant="label" style={{ textAlign: 'center' }}>{t(days !== undefined ? 'home.tracker.days' : 'habits.tracker.label')}</AppText>
           </View>
         </View>
       </View>

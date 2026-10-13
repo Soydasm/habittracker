@@ -4,7 +4,9 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { AppText, Button, EmptyState } from '../../components';
 import { useI18n } from '../../i18n';
+import { MAIN_STATE_DAYS, pointsOf, streakOf } from '../../lib/streak';
 import { useTheme } from '../../theme';
+import { AchievementCard } from '../home';
 import { DayStrip } from './DayStrip';
 import { HabitCard } from './HabitCard';
 import { Tracker } from './Tracker';
@@ -68,10 +70,13 @@ export function HabitList() {
 
   const add = () => router.push(NEW_HABIT_ROUTE);
   const list = habits.data ?? [];
+  // From a streak of MAIN_STATE_DAYS the home shows the streak and the next achievement; below it, the habit count.
+  const streak = habits.status === 'succeeded' ? streakOf(list, new Date()) : 0;
+  const achieved = streak >= MAIN_STATE_DAYS;
   return (
     <>
       <View style={{ marginBottom: theme.spacing.sm }}>
-        <Tracker count={habits.status === 'succeeded' ? list.length : null} />
+        <Tracker count={habits.status === 'succeeded' ? list.length : null} days={achieved ? streak : undefined} />
       </View>
       {deleted ? <Notice text={t('habits.home.deleted')} /> : null}
       <View style={{ width: '100%', maxWidth: wide ? 760 : 358, alignSelf: 'center', gap: theme.spacing.cozy }}>
@@ -100,6 +105,7 @@ export function HabitList() {
                 </View>
               ))}
             </View>
+            {achieved ? <AchievementCard points={pointsOf(streak)} /> : null}
             <Button
               title={t('habits.home.add')} icon="add" onPress={add} testID="home-add"
               style={{ marginTop: theme.spacing.sm, width: '100%', maxWidth: 358, alignSelf: 'center' }}

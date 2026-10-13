@@ -19,6 +19,33 @@
         "what": "2 times per week",
         "because": "\"yalnızca ad girilir\" — a habit has only a name, so there is no frequency to show"
       }
+    ],
+    "S04": [
+      {
+        "what": "2 times per week",
+        "because": "\"yalnızca ad girilir\" — a habit has only a name, so there is no frequency to show"
+      }
+    ],
+    "S08": [
+      {
+        "what": "2 times per week",
+        "because": "\"yalnızca ad girilir\" — a habit has only a name, so there is no frequency to show"
+      }
+    ]
+  },
+  "_setup": "python apps/api/manage.py seed_main_state",
+  "S04": {
+    "route": "/",
+    "setup": "python apps/api/manage.py seed_main_state",
+    "files": [
+      "apps/web/src/features/habits/Tracker.tsx",
+      "apps/web/src/features/habits/HabitList.tsx",
+      "apps/web/src/features/habits/HabitCard.tsx",
+      "apps/web/src/features/habits/DayStrip.tsx",
+      "apps/web/src/features/home/AchievementCard.tsx",
+      "apps/web/src/features/home/badge.ts",
+      "apps/web/src/lib/streak/index.ts",
+      "apps/web/app/index.tsx"
     ]
   },
   "S01.1": {
