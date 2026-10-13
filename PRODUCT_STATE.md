@@ -70,7 +70,7 @@ instead of adding a second way to do the same thing._
 - `apps/web/src/theme/index.tsx` — useTheme
 
 ### Tests
-- 0 python test files, 7 spec files
+- 0 python test files, 8 spec files
 
 ## Decisions
 - TASK-20261012-258852 — Design foundation: Tema, ortak bileşenler, gezinme kabuğu ve boş ana sayfa hazır. `pytest -q` (5 test), `npx tsc --noEmit` ve `npx playwright test` (5 test) geçti. Ekranlara 375, 390 ve 1440 px'te açık/koyu baktım. - **Tema:** `tokens.json _(TASK-20261012-258852, 2026-10-12)_
@@ -80,3 +80,4 @@ instead of adding a second way to do the same thing._
 - TASK-20261012-642294 — Kullanıcı alışkanlığı bugün için işaretler: `main` ile birleştirmedeki tek çakışma `PRODUCT_STATE.md` dosyasındaydı. Çakışma işaretlerini sildim ve iki tarafın satırlarını da bıraktım. Kodda çakışma yoktu, bu yüzden bu turda kodda değişiklik yapmadım. - `pytest -q _(TASK-20261012-642294, 2026-10-12)_
 - TASK-20261012-185834 — Kullanıcı haftalık özetini görür: Haftalık özet ekranı ve `GET /api/v1/habits/weekly-summary/` hazır; beş kabul kriteri de karşılanıyor ve üç kontrol (pytest, tsc, Playwright) geçti. - **API:** Uç yalnızca giriş yapmış kullanıcının alışkanlıklarını döndü _(TASK-20261012-185834, 2026-10-12)_
 - TASK-20261013-454975 — Kullanıcı 200. gün durumunda ana ekranı görür: Görsel kontrolün ikinci turundaki sapmaları düzelttim. `pytest -q` (53), `tsc --noEmit` ve Playwright (54 test) geçti. Kontrolü ben çalıştıramadım; üçüncü tur sonucunu bilmiyorum. - **Gün şeridi:** Tasarımda bugünün solu _(TASK-20261013-454975, 2026-10-13)_
+- TASK-20261013-376838 — Kullanıcı 200. gün başarı kutlamasını görür: İnceleme bulgularının ikisini de giderdim; Playwright'ın 62 testi ve `npx tsc --noEmit` geçti. `pytest -q` koşulmadı, backend'e dokunulmadı. - **Gizli anahtar (major):** `?celebration=off` parametresini ve onu okuyan kod _(TASK-20261013-376838, 2026-10-13)_

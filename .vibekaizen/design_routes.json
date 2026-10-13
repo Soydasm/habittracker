@@ -34,6 +34,17 @@
     ]
   },
   "_setup": "python apps/api/manage.py seed_main_state",
+  "S03": {
+    "route": "/",
+    "setup": "python apps/api/manage.py seed_main_state",
+    "files": [
+      "apps/web/screens/home/achievement/AchievementModal.tsx",
+      "apps/web/screens/home/achievement/index.tsx",
+      "apps/web/screens/home/achievement/art.ts",
+      "apps/web/src/features/home/AchievementBadge.tsx",
+      "apps/web/src/features/habits/HabitList.tsx"
+    ]
+  },
   "S04": {
     "route": "/",
     "setup": "python apps/api/manage.py seed_main_state",

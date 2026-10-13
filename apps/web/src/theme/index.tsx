@@ -48,6 +48,11 @@ const palette = {
     sheetShade: 'rgba(39, 47, 54, 0.2)', // the blurred shade behind the top sheet
     badgeCyan: '#1effd6', // the achievement badge's two soft lights
     badgeYellow: '#ecff12',
+    scrim: 'rgba(56, 52, 61, 0.88)', // the veil behind a modal sheet
+    handle: '#cbd1de', // a bottom sheet's grab line
+    pillFrom: '#a770e0', // the primary pill's gradient: light end (top right) ...
+    pillTo: '#58378e', // ... to dark end (bottom left)
+    lock: '#c37dfb', // the lock disc on the unlocked badge
   },
   dark: {
     background: '#2b2630',
@@ -86,6 +91,11 @@ const palette = {
     sheetShade: 'rgba(39, 47, 54, 0.2)',
     badgeCyan: '#1effd6',
     badgeYellow: '#ecff12',
+    scrim: 'rgba(24, 25, 29, 0.88)',
+    handle: 'rgba(203, 209, 222, 0.5)',
+    pillFrom: '#a770e0',
+    pillTo: '#58378e',
+    lock: '#c37dfb',
   },
 };
 

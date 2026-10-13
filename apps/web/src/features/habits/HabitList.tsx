@@ -6,6 +6,7 @@ import { AppText, Button, EmptyState } from '../../components';
 import { useI18n } from '../../i18n';
 import { MAIN_STATE_DAYS, pointsOf, streakOf } from '../../lib/streak';
 import { useTheme } from '../../theme';
+import { AchievementUnlocked } from '../../../screens/home/achievement';
 import { AchievementCard } from '../home';
 import { DayStrip } from './DayStrip';
 import { HabitCard } from './HabitCard';
@@ -75,6 +76,7 @@ export function HabitList() {
   const achieved = streak >= MAIN_STATE_DAYS;
   return (
     <>
+      <AchievementUnlocked streak={habits.status === 'succeeded' ? streak : null} />
       <View style={{ marginBottom: theme.spacing.sm }}>
         <Tracker count={habits.status === 'succeeded' ? list.length : null} days={achieved ? streak : undefined} />
       </View>

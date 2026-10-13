@@ -26,16 +26,16 @@ const GLYPH_SIZE = 16;
  * and — when it has an `icon` — a round accent button inside its right end. A screen has at most one `primary`;
  * everything else is `secondary` or `ghost`. `size="sm"` is the compact 44 px pill.
  */
-export function Button({ title, variant = 'primary', size = 'md', icon, loading, disabled, style, ...rest }:
-  Omit<PressableProps, 'children'> & {
-    title: string; variant?: Variant; size?: 'sm' | 'md'; icon?: IconName; loading?: boolean;
-  }) {
+export const Button = React.forwardRef<View, Omit<PressableProps, 'children'> & {
+  title: string; variant?: Variant; size?: 'sm' | 'md'; icon?: IconName; loading?: boolean;
+}>(function Button({ title, variant = 'primary', size = 'md', icon, loading, disabled, style, ...rest }, ref) {
   const { theme } = useTheme();
   const s = styles(theme, variant, size, loading ? 'busy' : icon ? 'icon' : 'none');
   const off = disabled || loading;
   const ink = s.label.color as string;
   return (
     <Pressable
+      ref={ref}
       accessibilityRole="button"
       accessibilityLabel={title}
       accessibilityState={{ disabled: !!off, busy: !!loading }}
@@ -57,7 +57,7 @@ export function Button({ title, variant = 'primary', size = 'md', icon, loading,
       ) : null}
     </Pressable>
   );
-}
+});
 
 /** The design sets the round icon 5 px inside the pill's edge. */
 const ICON_INSET = 5;
