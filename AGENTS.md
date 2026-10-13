@@ -53,3 +53,10 @@ Giriş/kayıt, ana liste, alışkanlık ekleme, günlük işaretleme, haftalık 
 ## Lessons — Retro — Sprint 1
 - Her kabul kriterindeki 'Then' ifadesi ekranda görünen bir öğeye (metin, liste satırı, hata mesajı) bağlanmalı. Sprint 1'deki UAT reddi bu kuralı güçlendirmek için bir uyarıdır; nedeni ölçümde yok.
 - Bir görev review'a gönderilmeden önce Developer, görevin her kabul kriterini önizlemede tek tek elle doğrulamalı. Review turu ortalaması 1,67 olduğu için ilk turda geçme oranı artırılmalı.
+
+## Lessons — Retro — Sprint 2
+- Tasarım kontrolü için ürüne gizli sorgu parametresi, bayrak veya anahtar ekleme (örn. `celebration=off`). Belirli bir ekran durumu gerekiyorsa seed verisi ya da test fixture'ı kullan. Sprint 2'de bu yüzden 1 review turu harcandı.
+- Seri ve puan hesaplarını yapan saf fonksiyonların (`streakOf`, `pointsOf`, `withToday`) birim testi olmalı. 199/200 gün sınırı ve bugün açıkken dünden sayma durumları test edilmeli.
+- SVG ve bileşenlerde ham hex renk kullanma; tema token'larını kullan. Rozet SVG'lerinde 7 ham renk bulundu.
+- Ortak `Header` veya paylaşılan yerleşim sabitlerini (örn. `SHEET_TOP`) değiştiren her PR, etkilenen diğer ekranları (/weekly, /settings) açıklamasında listelemeli ve bu ekranlarda görsel kontrol yapılmalı.
+- Görsel kontrolde açık fark kalan ekranlar (şu an S04, S08) bir sonraki sprintte ilk iş olarak kapatılmalı; yeni göreve geçmeden önce bu farklar giderilmeli.
