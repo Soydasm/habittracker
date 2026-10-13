@@ -46,6 +46,8 @@ const palette = {
     haze: 'rgba(228, 170, 255, 0.27)', // the lilac glow under the tracker's round button
     umbra: 'rgba(26, 23, 45, 0.17)', // the grey shade under it
     sheetShade: 'rgba(39, 47, 54, 0.2)', // the blurred shade behind the top sheet
+    badgeCyan: '#1effd6', // the achievement badge's two soft lights
+    badgeYellow: '#ecff12',
   },
   dark: {
     background: '#2b2630',
@@ -82,6 +84,8 @@ const palette = {
     haze: 'rgba(228, 170, 255, 0.27)',
     umbra: 'rgba(26, 23, 45, 0.17)',
     sheetShade: 'rgba(39, 47, 54, 0.2)',
+    badgeCyan: '#1effd6',
+    badgeYellow: '#ecff12',
   },
 };
 

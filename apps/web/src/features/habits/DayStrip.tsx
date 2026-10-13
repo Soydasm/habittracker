@@ -4,13 +4,13 @@ import { AppText } from '../../components';
 import { useI18n } from '../../i18n';
 import { useTheme } from '../../theme';
 
-const BEHIND = 3;
-const AHEAD = 6;
+const BEHIND = 5;
+const AHEAD = 4;
 const CHIP = 30;
 const TODAY_HEIGHT = 49;
 
 /**
- * The day strip of the design: three days behind us, today as a violet pill with its weekday, and six days
+ * The day strip of the design: five days behind us, today as a violet pill with its weekday, and four days
  * ahead — as round chips. It only shows the calendar for now; marking a day comes with the check feature.
  */
 export function DayStrip() {

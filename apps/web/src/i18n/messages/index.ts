@@ -8,6 +8,7 @@ import auth from './auth';
 import common from './common';
 import habitChecks from './habit-checks';
 import habits from './habits';
+import home from './home';
 import nav from './nav';
 import uiKit from './uiKit';
 import weekly from './weekly';
@@ -18,6 +19,7 @@ const features = [
   common,
   habitChecks,
   habits,
+  home,
   nav,
   uiKit,
   weekly,

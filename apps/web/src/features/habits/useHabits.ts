@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
 import { useFocusEffect } from 'expo-router';
 import { ApiError } from '../../api/client';
+import { withToday } from '../../lib/streak';
 import { checkHabit, fetchHabits, uncheckHabit } from './api';
 import type { Habit, RequestStatus } from './types';
 
@@ -42,9 +43,10 @@ export function useHabits() {
     pending.current.add(habit.id);
     const next = !habit.checked_today;
     setCheckError(false);
-    replace({ ...habit, checked_today: next, streak: Math.max(0, habit.streak + (next ? 1 : -1)) });
+    const check_days = withToday(habit, new Date(), next);
+    replace({ ...habit, checked_today: next, streak: Math.max(0, habit.streak + (next ? 1 : -1)), check_days });
     (next ? checkHabit : uncheckHabit)(habit.id)
-      .then(replace)
+      .then((fresh) => replace(check_days ? { ...fresh, check_days } : fresh))
       .catch(() => { replace(habit); setCheckError(true); })
       .finally(() => { pending.current.delete(habit.id); });
   }, [replace]);

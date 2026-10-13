@@ -7,6 +7,8 @@ import { AppText } from './AppText';
 /** The design's blurred shade behind the sheet: 43 px in from both sides, blurred by 44 (a deviation of half that). */
 const SHADE_INSET = 43;
 const SHADE_BLUR = 22;
+/** The sheet is 95 px tall in the design: its text starts 36 px down, and the handle sits 2 px above the edge. */
+const SHEET_TOP = 27;
 
 /**
  * The design's top sheet (the slide): a white (dark: slate) band with the soft shadow and rounded bottom corners,
@@ -20,7 +22,7 @@ export function Header({ title, note, titleSlot, actionSlot, testID }: {
   const insets = useSafeAreaInsets();
   const sheet = {
     backgroundColor: theme.colors.surface, borderBottomLeftRadius: theme.radius.lg,
-    borderBottomRightRadius: theme.radius.lg, paddingTop: insets.top + theme.spacing.lg,
+    borderBottomRightRadius: theme.radius.lg, paddingTop: insets.top + SHEET_TOP,
     paddingBottom: theme.spacing.lg, ...theme.shadow.sm,
   };
   const row = {
@@ -43,7 +45,7 @@ export function Header({ title, note, titleSlot, actionSlot, testID }: {
           {note ? <AppText variant="small" muted style={{ textAlign: 'right', flexShrink: 1 }}>{note}</AppText> : null}
         </View>
         <View style={{
-          position: 'absolute', bottom: theme.spacing.xs, alignSelf: 'center', width: 54, height: 3,
+          position: 'absolute', bottom: theme.spacing.xxs, alignSelf: 'center', width: 54, height: 3,
           borderRadius: theme.radius.pill, backgroundColor: theme.colors.border,
         }} />
       </View>

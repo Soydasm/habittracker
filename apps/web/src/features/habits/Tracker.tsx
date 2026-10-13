@@ -30,17 +30,13 @@ const SHADES = [
   { left: 33, top: 88, size: 153, color: 'haze' },
   { left: 73, top: 128, size: 151, color: 'umbra' },
 ] as const;
-/** The design blurs them by 47 (a Gaussian's deviation is half of that); the picture leaves room for the spread. */
+/** The design blurs them by 47 (a Gaussian's deviation is half of that, which is what CSS takes). */
 const BLUR = 47;
-const SPREAD = BLUR * 2;
+/** In the design the number and its label overlap by 8 px and sit 2.5 px left of the face's middle. */
+const TEXT_SHIFT = { marginRight: 5 } as const;
 
 const disc = (size: number, fill: string) =>
   `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><circle cx="${size / 2}" cy="${size / 2}" r="${size / 2}" fill="${fill}"/></svg>`;
-
-const blurredDisc = (size: number, fill: string) => {
-  const full = size + SPREAD * 2;
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${full}" height="${full}"><filter id="b" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="${BLUR / 2}"/></filter><circle cx="${full / 2}" cy="${full / 2}" r="${size / 2}" fill="${fill}" filter="url(#b)"/></svg>`;
-};
 
 const channels =(hex: string) => [1, 3, 5].map((at) => parseInt(hex.slice(at, at + 2), 16));
 
@@ -52,9 +48,10 @@ function mix(from: string, to: string, step: number) {
 
 /**
  * The round tracker above the list, drawn from the design: the dashed ring (the first half lit magenta, fading
- * out), the round face in the middle and the soft bubbles around it. The face carries the number of habits.
+ * out), the round face in the middle and the soft bubbles around it. The face carries the number of habits — or,
+ * with `days`, the streak in days (the home screen's "next achievement" state).
  */
-export function Tracker({ count }: { count: number | null }) {
+export function Tracker({ count, days }: { count: number | null; days?: number }) {
   const { theme } = useTheme();
   const { t, tn, format } = useI18n();
   const { width } = useWindowDimensions();
@@ -67,7 +64,8 @@ export function Tracker({ count }: { count: number | null }) {
   const centred = { position: 'absolute', alignItems: 'center', justifyContent: 'center' } as const;
   return (
     <View
-      testID="home-tracker" accessible accessibilityLabel={count === null ? t('habits.home.loading') : tn('habits.count', count)}
+      testID="home-tracker" accessible accessibilityLabel={days !== undefined ? tn('home.streak', days)
+        : count === null ? t('habits.home.loading') : tn('habits.count', count)}
       style={{ width: Math.min(WIDTH, width), height: HEIGHT, alignSelf: 'center' }}
     >
       {BUBBLES.map((bubble) => (
@@ -79,11 +77,15 @@ export function Tracker({ count }: { count: number | null }) {
       ))}
       <View style={{ position: 'absolute', top: RING_TOP, left: (Math.min(WIDTH, width) - RING) / 2, width: RING, height: RING }}>
         {SHADES.map((shade) => (
-          <Graphic
-            key={shade.color} svg={blurredDisc(shade.size, colors[shade.color])} width={shade.size + SPREAD * 2}
-            height={shade.size + SPREAD * 2}
-            style={{ position: 'absolute', left: shade.left - SPREAD, top: shade.top - SPREAD }}
-          />
+          <View
+            key={shade.color}
+            style={{
+              position: 'absolute', left: shade.left, top: shade.top, width: shade.size, height: shade.size,
+              filter: `blur(${BLUR / 2}px)`,
+            }}
+          >
+            <Graphic svg={disc(shade.size, colors[shade.color])} width={shade.size} height={shade.size} />
+          </View>
         ))}
         {ticks.map((tick) => (
           <View key={tick.angle} style={{
@@ -96,11 +98,11 @@ export function Tracker({ count }: { count: number | null }) {
         <View style={[centred, { left: (RING - HALO) / 2, top: (RING - HALO) / 2, width: HALO, height: HALO,
           borderRadius: theme.radius.pill, backgroundColor: colors.discRing }]}>
           <View style={[centred, { position: 'relative', width: FACE, height: FACE, borderRadius: theme.radius.pill,
-            backgroundColor: colors.disc }]}>
-            <AppText variant="display" testID="home-tracker-count" style={{ textAlign: 'center' }}>
-              {count === null ? '–' : format.number(count)}
+            backgroundColor: colors.disc, paddingTop: 4 }]}>
+            <AppText variant="display" testID="home-tracker-count" style={[{ textAlign: 'center' }, TEXT_SHIFT]}>
+              {days !== undefined ? format.number(days) : count === null ? '–' : format.number(count)}
             </AppText>
-            <AppText variant="label" style={{ textAlign: 'center' }}>{t('habits.tracker.label')}</AppText>
+            <AppText variant="label" style={[{ textAlign: 'center', marginTop: -8 }, TEXT_SHIFT]}>{t(days !== undefined ? 'home.tracker.days' : 'habits.tracker.label')}</AppText>
           </View>
         </View>
       </View>
