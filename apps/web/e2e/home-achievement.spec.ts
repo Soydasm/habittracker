@@ -58,7 +58,7 @@ test.describe('the 200-day celebration', () => {
     await expect(page.getByTestId('home-achievement-modal-title')).toHaveText('Başarı kilidi açıldı!');
     await expect(page.getByTestId('home-achievement-modal-days')).toHaveText('200 gün');
     await expect(page.getByTestId('home-achievement-modal-points')).toHaveText('100 puan');
-    await expect(page.getByTestId('home-achievement-dismiss')).toHaveText('Yaşasın!');
+    await expect(page.getByTestId('home-achievement-dismiss')).toHaveText('Yay!');
     await expect(page.getByRole('dialog')).toHaveCount(1);
     await expect(page.getByTestId('home-achievement-dismiss')).toBeFocused();
   });

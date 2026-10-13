@@ -11,6 +11,6 @@ export default defineMessages({
     'home.achievement.goal': '{{days}} gün',
     'home.unlocked.title': 'Başarı kilidi açıldı!',
     'home.unlocked.days': '{{days}} gün',
-    'home.unlocked.dismiss': 'Yaşasın!',
+    'home.unlocked.dismiss': 'Yay!',
   },
 });

@@ -13,6 +13,10 @@ const HANDLE = { width: 54, height: 3, top: 5 };
 const ART_TOP = 25;
 const BUTTON = { maxWidth: 271, height: 57 };
 const SHEET_MAX = 480;
+/** The design's picture sits 13 px left of the sheet's middle (it starts at x = 83, not 96): twice that as a margin. */
+const ART_SHIFT = 26;
+/** Its "Yay!" is centred 2.5 px left of the pill's middle. */
+const LABEL_SHIFT = 5;
 
 /**
  * The celebration the design draws as "2.2 Main": a bottom sheet over the home screen with the unlocked badge, the
@@ -29,7 +33,13 @@ export function AchievementModal({ days, onClose }: { days: number; onClose: () 
 
   useEffect(() => {
     // The portal mounts the sheet after this effect's first run: focus the button once it is there.
-    const frame = requestAnimationFrame(() => dismiss.current?.focus());
+    const frame = requestAnimationFrame(() => {
+      const button = dismiss.current;
+      if (!button) return;
+      // The design draws the pill without a ring; the button is the sheet's only control, so the focus is clear.
+      if (button instanceof HTMLElement) button.style.outline = 'none';
+      button.focus();
+    });
     return () => cancelAnimationFrame(frame);
   }, []);
 
@@ -60,7 +70,7 @@ export function AchievementModal({ days, onClose }: { days: number; onClose: () 
               borderTopLeftRadius: SHEET_RADIUS, borderTopRightRadius: SHEET_RADIUS,
               borderBottomLeftRadius: wide ? SHEET_RADIUS : 0, borderBottomRightRadius: wide ? SHEET_RADIUS : 0,
               marginBottom: wide ? theme.spacing.lg : 0, ...theme.shadow.md, alignItems: 'center',
-              paddingTop: ART_TOP, paddingBottom: theme.spacing.xxl, paddingHorizontal: theme.spacing.xl,
+              paddingTop: ART_TOP, paddingBottom: theme.spacing.xxl - 2, paddingHorizontal: theme.spacing.xl,
             }}
           >
             <View
@@ -69,7 +79,7 @@ export function AchievementModal({ days, onClose }: { days: number; onClose: () 
                 borderRadius: theme.radius.pill, backgroundColor: theme.colors.handle,
               }}
             />
-            <View accessible={false} style={{ width: ART.width, height: ART.height }}>
+            <View accessible={false} style={{ width: ART.width, height: ART.height, marginRight: ART_SHIFT }}>
               {ART.bubbles.map((bubble) => (
                 <View
                   key={`${bubble.left}-${bubble.top}`}
@@ -99,19 +109,19 @@ export function AchievementModal({ days, onClose }: { days: number; onClose: () 
                 <Graphic svg={lockSvg} width={lock.glyph} height={lock.glyph} />
               </View>
             </View>
-            <View style={{ marginTop: theme.spacing.md, alignItems: 'center' }}>
+            <View style={{ marginTop: theme.spacing.md - 2, alignItems: 'center' }}>
               <AppText testID="home-achievement-modal-title" style={{ textAlign: 'center' }}>{title}</AppText>
               <AppText testID="home-achievement-modal-days" style={{ textAlign: 'center' }}>{reached}</AppText>
             </View>
             <AppText
               variant="caption" testID="home-achievement-modal-points"
-              style={{ marginTop: theme.spacing.sm, textAlign: 'center' }}
+              style={{ marginTop: theme.spacing.sm + 2, textAlign: 'center' }}
             >
               {tn('home.points', pointsOf(days))}
             </AppText>
             <View
               style={{
-                marginTop: theme.spacing.md, width: '100%', maxWidth: BUTTON.maxWidth, height: BUTTON.height,
+                marginTop: theme.spacing.md + 1, width: '100%', maxWidth: BUTTON.maxWidth, height: BUTTON.height,
                 borderRadius: theme.radius.xl, overflow: 'hidden',
               }}
             >
@@ -121,7 +131,7 @@ export function AchievementModal({ days, onClose }: { days: number; onClose: () 
               />
               <Button
                 ref={dismiss} testID="home-achievement-dismiss" title={t('home.unlocked.dismiss')} onPress={onClose}
-                style={{ backgroundColor: 'transparent' }}
+                style={{ backgroundColor: 'transparent', paddingTop: 2, paddingRight: theme.spacing.xl + LABEL_SHIFT }}
               />
             </View>
           </View>
