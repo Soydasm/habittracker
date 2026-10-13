@@ -116,7 +116,12 @@ test.describe('the home screen at a 200-day streak', () => {
   });
 
   test('without habits the empty state shows, with no achievement block', async ({ page, request }) => {
-    const token = await setup(request, []);
+    const token = await setup(request);
+    await page.route(LIST, async (route) => {
+      const response = await route.fetch();
+      const body = await response.json();
+      await route.fulfill({ response, json: { ...body, data: { ...body.data, results: [], count: 0 } } });
+    });
     await signIn(page, token);
     await expect(page.getByTestId('home-empty')).toBeVisible({ timeout: 30_000 });
     await expect(page.getByTestId('home-achievement')).toHaveCount(0);

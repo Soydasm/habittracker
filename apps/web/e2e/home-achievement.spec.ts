@@ -1,7 +1,5 @@
 import { test, expect, type APIRequestContext, type Page } from '@playwright/test';
 
-const PASSWORD = 'correct-horse-9';
-const uniqueEmail = () => `win-${Date.now()}-${Math.random().toString(36).slice(2, 8)}@example.com`;
 const LIST = /\/api\/v1\/habits\/\?/;
 
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -14,32 +12,32 @@ function day(offset: number) {
 /** `count` consecutive marked days, the last one `end` days from today (0 = today, -1 = yesterday). */
 const records = (count: number, end: number) => Array.from({ length: count }, (_, i) => day(end - i));
 
-/** One account with one habit for the whole file (sign-up is throttled); each test is a fresh browser context. */
-let account: Promise<{ token: string; id: string }> | null = null;
-function setup(request: APIRequestContext) {
-  account ??= (async () => {
-    const registered = await request.post('/api/v1/auth/register/', { data: { email: uniqueEmail(), password: PASSWORD } });
-    expect(registered.status()).toBe(201);
-    const body = (await registered.json()).data;
-    const created = await request.post('/api/v1/habits/', {
-      data: { name: 'Kitap oku' }, headers: { Authorization: `Bearer ${body.access}` },
-    });
-    expect(created.status()).toBe(201);
-    return { token: body.access as string, id: body.user.id as string };
-  })();
-  return account;
+/**
+ * A signed-in user and one habit, all answered by `page.route` (see `mockRecords`): the sign-up and sign-in
+ * endpoints are throttled for the whole suite, so this spec makes no account of its own.
+ */
+const ACCOUNT = { token: 'e2e-token', id: 'e2e-user-200' };
+const HABIT_ID = 'e2e-habit-200';
+const envelope = (data: unknown) => ({ success: true, message: 'OK', data });
+
+async function setup(_request?: APIRequestContext) {
+  return ACCOUNT;
 }
 
-/** The habits response, with every habit carrying these check records (the 200-day record of the brief). */
+/** The habits list, `/auth/me/` and the check call, answered with a habit carrying these check records. */
 async function mockRecords(page: Page, check_days: string[]) {
-  await page.route(LIST, async (route) => {
-    const response = await route.fetch();
-    const body = await response.json();
-    const checked_today = check_days.includes(day(0));
-    body.data.results = body.data.results.map((habit: object) => ({
-      ...habit, check_days, checked_today, streak: check_days.length,
-    }));
-    await route.fulfill({ response, json: body });
+  let marked = check_days;
+  const habit = () => ({
+    id: HABIT_ID, name: 'Kitap oku', created_at: new Date().toISOString(), check_days: marked,
+    checked_today: marked.includes(day(0)), streak: marked.length,
+  });
+  await page.route('**/api/v1/auth/me/', (route) =>
+    route.fulfill({ json: envelope({ id: ACCOUNT.id, username: 'e2e', email: 'e2e@example.com' }) }));
+  await page.route(LIST, (route) =>
+    route.fulfill({ json: envelope({ results: [habit()], count: 1, next: null, previous: null }) }));
+  await page.route(`**/api/v1/habits/${HABIT_ID}/check/`, (route) => {
+    marked = [...marked, day(0)];
+    return route.fulfill({ json: envelope(habit()) });
   });
 }
 
