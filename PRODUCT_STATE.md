@@ -30,7 +30,7 @@ instead of adding a second way to do the same thing._
 - `HabitCheck` (2 fields) — `apps/api/apps/habits/models.py`
 
 ### Tests
-- 7 python test files, 0 spec files
+- 8 python test files, 0 spec files
 
 ## Part `web` (`apps/web`)
 
@@ -70,7 +70,7 @@ instead of adding a second way to do the same thing._
 - `apps/web/src/theme/index.tsx` — useTheme
 
 ### Tests
-- 0 python test files, 6 spec files
+- 0 python test files, 7 spec files
 
 ## Decisions
 - TASK-20261012-258852 — Design foundation: Tema, ortak bileşenler, gezinme kabuğu ve boş ana sayfa hazır. `pytest -q` (5 test), `npx tsc --noEmit` ve `npx playwright test` (5 test) geçti. Ekranlara 375, 390 ve 1440 px'te açık/koyu baktım. - **Tema:** `tokens.json _(TASK-20261012-258852, 2026-10-12)_
@@ -79,3 +79,4 @@ instead of adding a second way to do the same thing._
 - TASK-20261012-362936 — Yeni ziyaretçi karşılama ekranını görür: `main` ile birleştirme çözüldü ve üç kontrolün üçü de geçti, ama tek bir mevcut testin beklentisini değiştirmem gerekti (aşağıda). Bu oturumda onay verilmediği için, birleştirme sonrasında conflict marker kalmadığını gös _(TASK-20261012-362936, 2026-10-12)_
 - TASK-20261012-642294 — Kullanıcı alışkanlığı bugün için işaretler: `main` ile birleştirmedeki tek çakışma `PRODUCT_STATE.md` dosyasındaydı. Çakışma işaretlerini sildim ve iki tarafın satırlarını da bıraktım. Kodda çakışma yoktu, bu yüzden bu turda kodda değişiklik yapmadım. - `pytest -q _(TASK-20261012-642294, 2026-10-12)_
 - TASK-20261012-185834 — Kullanıcı haftalık özetini görür: Haftalık özet ekranı ve `GET /api/v1/habits/weekly-summary/` hazır; beş kabul kriteri de karşılanıyor ve üç kontrol (pytest, tsc, Playwright) geçti. - **API:** Uç yalnızca giriş yapmış kullanıcının alışkanlıklarını döndü _(TASK-20261012-185834, 2026-10-12)_
+- TASK-20261013-454975 — Kullanıcı 200. gün durumunda ana ekranı görür: Görsel kontrolün ikinci turundaki sapmaları düzelttim. `pytest -q` (53), `tsc --noEmit` ve Playwright (54 test) geçti. Kontrolü ben çalıştıramadım; üçüncü tur sonucunu bilmiyorum. - **Gün şeridi:** Tasarımda bugünün solu _(TASK-20261013-454975, 2026-10-13)_
