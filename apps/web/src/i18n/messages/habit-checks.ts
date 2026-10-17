@@ -9,4 +9,12 @@ export default defineMessages({
     'habits.streak.one': '{{count}} gün',
     'habits.streak.other': '{{count}} gün',
   },
+  en: {
+    'habits.check.done': 'Done',
+    'habits.check.mark': 'Mark {{name}} as done today',
+    'habits.check.unmark': 'Undo today\'s mark for {{name}}',
+    'habits.check.error': 'The mark couldn\'t be saved. Please try again.',
+    'habits.streak.one': '{{count}} day',
+    'habits.streak.other': '{{count}} days',
+  },
 });

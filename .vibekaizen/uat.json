@@ -4,8 +4,8 @@
     {"label": "200 günlük serisi olan kullanıcı", "email": "design@example.com", "password": "correct-horse-9"}
   ],
   "steps": [
-    "/login adresinden bu hesapla giriş yap; ana ekran açılınca listenin üstünde 'Başarı kilidi açıldı! 200 gün', '100 puan' ve 'Yay!' düğmesi olan kutlama modalı görünür.",
-    "'Yay!' düğmesine bas: modal kapanır; 200 sayacı, 'Sıradaki başarı' bloğundaki 100 puan ve alışkanlık listesi ekranda kalır, alışkanlığı işaretlemeye devam edebilirsin.",
+    "/login adresinden bu hesapla giriş yap; ana ekran açılınca listenin üstünde 'Başarı kilidi açıldı! 200 gün', '100 puan' ve 'Harika!' düğmesi olan kutlama modalı görünür.",
+    "'Harika!' düğmesine bas: modal kapanır; 200 sayacı, 'Sıradaki başarı' bloğundaki 100 puan ve alışkanlık listesi ekranda kalır, alışkanlığı işaretlemeye devam edebilirsin.",
     "Tarayıcının localStorage'ından 'home:achievement-dismissed:200:...' anahtarını silip sayfayı yenile, modal yine açılır; Esc'ye bas, kapanır. Aynısını arka plana (koyu alana) dokunarak dene.",
     "Kapattıktan sonra sayfayı yenile: modal yeniden açılmaz.",
     "Yeni bir hesap aç ve bir alışkanlık ekle (seri 200'ün altında): modal hiç görünmez.",

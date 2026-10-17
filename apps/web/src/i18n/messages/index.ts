@@ -6,9 +6,11 @@
 import { LOCALES, type Locale } from '../config';
 import auth from './auth';
 import common from './common';
+import demo from './demo';
 import habitChecks from './habit-checks';
 import habits from './habits';
 import home from './home';
+import language from './language';
 import nav from './nav';
 import uiKit from './uiKit';
 import weekly from './weekly';
@@ -17,9 +19,11 @@ import welcome from './welcome';
 const features = [
   auth,
   common,
+  demo,
   habitChecks,
   habits,
   home,
+  language,
   nav,
   uiKit,
   weekly,

@@ -50,7 +50,7 @@ async function open(page: Page, token: string) {
 const modal = (page: Page) => page.getByTestId('home-achievement-modal');
 
 test.describe('the 200-day celebration', () => {
-  test('opens over the home screen with the title and the "Yay!" button, focus on the button', async ({ page, request }) => {
+  test('opens over the home screen with the title and the "Harika!" button, focus on the button', async ({ page, request }) => {
     const { token } = await setup(request);
     await mockRecords(page, records(200, -1));
     await open(page, token);
@@ -58,12 +58,12 @@ test.describe('the 200-day celebration', () => {
     await expect(page.getByTestId('home-achievement-modal-title')).toHaveText('Başarı kilidi açıldı!');
     await expect(page.getByTestId('home-achievement-modal-days')).toHaveText('200 gün');
     await expect(page.getByTestId('home-achievement-modal-points')).toHaveText('100 puan');
-    await expect(page.getByTestId('home-achievement-dismiss')).toHaveText('Yay!');
+    await expect(page.getByTestId('home-achievement-dismiss')).toHaveText('Harika!');
     await expect(page.getByRole('dialog')).toHaveCount(1);
     await expect(page.getByTestId('home-achievement-dismiss')).toBeFocused();
   });
 
-  test('"Yay!" closes it and the counter, the points and the list stay', async ({ page, request }) => {
+  test('"Harika!" closes it and the counter, the points and the list stay', async ({ page, request }) => {
     const { token } = await setup(request);
     await mockRecords(page, records(200, -1));
     await open(page, token);
@@ -91,7 +91,7 @@ test.describe('the 200-day celebration', () => {
     await expect(page.getByTestId('home-tracker-count')).toHaveText('200');
   });
 
-  test('shows a focus ring on the "Yay!" button only once the keyboard is used', async ({ page, request }) => {
+  test('shows a focus ring on the "Harika!" button only once the keyboard is used', async ({ page, request }) => {
     const { token } = await setup(request);
     await mockRecords(page, records(200, -1));
     await open(page, token);

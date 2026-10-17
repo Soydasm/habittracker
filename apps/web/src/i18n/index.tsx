@@ -1,8 +1,9 @@
 /**
  * Every user-visible string, number, price and date goes through here. A screen never contains prose and never
  * formats a number itself: `t(key, params)` for text, `tn(key, count)` for "1 item / 3 items", `format.money`,
- * `format.number`, `format.date`, `format.time` for values. The language is the user's saved choice, else the
- * device's, else `DEFAULT_LOCALE`; `LanguageSwitcher` (src/components) changes it.
+ * `format.number`, `format.date`, `format.time` for values. The language is `EXPO_PUBLIC_LOCALE` when the build
+ * pins one (a single-language deployment), else the user's saved choice, else the device's, else
+ * `DEFAULT_LOCALE`; `LanguageSwitcher` (src/components, on the settings screen) changes it when not pinned.
  */
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Platform } from 'react-native';
@@ -25,7 +26,11 @@ function supported(tag: string | undefined | null): Locale | null {
   return (LOCALES as readonly string[]).includes(base) ? (base as Locale) : null;
 }
 
+/** The language the build is pinned to (`EXPO_PUBLIC_LOCALE=tr|en`), or null when the user may choose. */
+export const PINNED_LOCALE: Locale | null = supported(process.env.EXPO_PUBLIC_LOCALE);
+
 function deviceLocale(): Locale {
+  if (PINNED_LOCALE) return PINNED_LOCALE;
   const tags = Platform.OS === 'web' && typeof navigator !== 'undefined'
     ? [...(navigator.languages ?? []), navigator.language]
     : [Intl.DateTimeFormat().resolvedOptions().locale];
@@ -72,6 +77,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>(deviceLocale);
 
   useEffect(() => {
+    if (PINNED_LOCALE) return;
     AsyncStorage.getItem(STORAGE_KEY)
       .then((saved) => {
         const choice = supported(saved);

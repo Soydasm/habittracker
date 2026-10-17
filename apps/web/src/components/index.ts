@@ -10,4 +10,5 @@ export { EmptyState } from './EmptyState';
 export { Graphic } from './Graphic';
 export { Header } from './Header';
 export { Input } from './Input';
+export { LanguageSwitcher } from './LanguageSwitcher';
 export { Screen } from './Screen';

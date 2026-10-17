@@ -20,11 +20,20 @@ test.describe('the navigation shell and the home screen', () => {
     expect(hrefs.filter((href) => href.includes('ui-kit'))).toEqual([]);
   });
 
-  test('the app speaks Turkish only: no language switcher', async ({ page }) => {
+  test('the app follows the browser language: Turkish for a Turkish browser', async ({ page }) => {
     await page.goto('/login');
     await expect(page.getByTestId('app-header-name')).toBeVisible({ timeout: 30_000 });
-    await expect(page.getByTestId('language-switcher')).toHaveCount(0);
     await expect(page.locator('html')).toHaveAttribute('lang', 'tr');
+  });
+
+  test.describe('an English browser', () => {
+    test.use({ locale: 'en-US' });
+
+    test('sees the app in English', async ({ page }) => {
+      await page.goto('/login');
+      await expect(page.getByTestId('app-header-name')).toHaveText('Habit Tracker', { timeout: 30_000 });
+      await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+    });
   });
 });
 

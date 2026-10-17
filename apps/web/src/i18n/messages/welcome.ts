@@ -7,4 +7,10 @@ export default defineMessages({
     'welcome.skip': 'Geç',
     'welcome.illustration': 'Gülen bir emoji ve yeşil bir onay işareti',
   },
+  en: {
+    'welcome.tagline': 'Earn points and achievements. Mark your tasks as done every day.',
+    'welcome.start': 'Let\'s start!',
+    'welcome.skip': 'Skip',
+    'welcome.illustration': 'A smiling emoji and a green check mark',
+  },
 });

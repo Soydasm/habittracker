@@ -6,4 +6,9 @@ export default defineMessages({
     'nav.list': 'Liste',
     'nav.settings': 'Ayarlar',
   },
+  en: {
+    'nav.label': 'Main navigation',
+    'nav.list': 'List',
+    'nav.settings': 'Settings',
+  },
 });

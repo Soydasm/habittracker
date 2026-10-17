@@ -1,8 +1,8 @@
 import React from 'react';
 import { ActivityIndicator, View } from 'react-native';
-import { AppText, Button, Card, EmptyState, Screen } from '../src/components';
+import { AppText, Button, Card, EmptyState, LanguageSwitcher, Screen } from '../src/components';
 import { useAuth, useMe } from '../src/features/auth';
-import { useI18n } from '../src/i18n';
+import { PINNED_LOCALE, useI18n } from '../src/i18n';
 import { useTheme } from '../src/theme';
 
 /** The account card: the e-mail from /auth/me/ in its four states, and the sign-out button. */
@@ -15,7 +15,7 @@ function Account() {
   if (me.status === 'failed') {
     return (
       <EmptyState testID="settings-error" icon="alert-circle-outline" title={t('app.error')}
-        body={me.error ?? undefined} actionTitle={t('app.retry')} onAction={me.reload} />
+        body={t('auth.settings.error.body')} actionTitle={t('app.retry')} onAction={me.reload} />
     );
   }
   return (
@@ -28,6 +28,12 @@ function Account() {
           <ActivityIndicator testID="settings-loading" color={theme.colors.primary} accessibilityLabel={t('app.loading')} />
         )}
       </Card>
+      {PINNED_LOCALE ? null : (
+        <Card testID="settings-language">
+          <AppText variant="label">{t('language.label')}</AppText>
+          <LanguageSwitcher />
+        </Card>
+      )}
       <Button title={t('auth.settings.logout')} variant="secondary" onPress={signOut} testID="settings-logout" />
     </View>
   );
