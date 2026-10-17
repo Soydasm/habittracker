@@ -4,6 +4,7 @@ import { Link, Stack, usePathname } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AppText, BottomNav, Header, type NavItem } from '../src/components';
 import { AuthProvider, HOME_ROUTE, LOGIN_ROUTE, REGISTER_ROUTE, SETTINGS_ROUTE, WELCOME_ROUTE, useAuth, useAuthGuard } from '../src/features/auth';
+import { DEMO, DemoBanner } from '../src/features/demo';
 import { WEEKLY_ROUTE } from '../src/features/weekly';
 import { I18nProvider, useI18n } from '../src/i18n';
 import { ThemeProvider, useTheme } from '../src/theme';
@@ -57,6 +58,7 @@ function Shell() {
   const welcome = usePathname() === WELCOME_ROUTE;
   return (
     <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
+      {DEMO ? <DemoBanner /> : null}
       {welcome ? null : (
         <Header
           titleSlot={<AppName />} actionSlot={status === 'signedOut' ? <GuestLinks /> : null} testID="app-header"

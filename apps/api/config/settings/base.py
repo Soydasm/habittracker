@@ -126,3 +126,15 @@ from datetime import timedelta  # noqa: E402
 
 SIMPLE_JWT = {'ACCESS_TOKEN_LIFETIME': timedelta(days=7)}
 REST_FRAMEWORK['DEFAULT_THROTTLE_RATES'] = {'auth': '60/minute'}
+
+# --- deployment: the API on its own hostname behind a reverse proxy. The web app's origin(s) go in
+# CORS_ALLOWED_ORIGINS and CSRF_TRUSTED_ORIGINS (comma separated, with scheme: https://app.example.com).
+CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS', default=[])
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[])
+if env.bool('CORS_ALLOW_ALL_ORIGINS', default=False):
+    CORS_ALLOW_ALL_ORIGINS = True
+
+# --- demo: the public demo (DEMO_MODE=1) never sends an e-mail; seed_demo resets its accounts.
+DEMO_MODE = env.bool('DEMO_MODE', default=False)
+if DEMO_MODE:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

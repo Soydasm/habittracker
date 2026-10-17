@@ -9,6 +9,7 @@ import { Link } from 'expo-router';
 import { ApiError } from '../../api/client';
 import { AppText, Button, Card, Input } from '../../components';
 import { useI18n, type MessageKey } from '../../i18n';
+import { DEMO, DemoCredentials } from '../demo';
 import { useTheme } from '../../theme';
 import { useAuth } from './AuthContext';
 import { LOGIN_ROUTE, REGISTER_ROUTE } from './guard';
@@ -94,6 +95,13 @@ export function AuthForm({ mode }: { mode: Mode }) {
   const message = (key?: MessageKey) => (key ? t(key) : null);
   return (
     <Card testID={`${mode}-form`} style={{ gap: theme.spacing.md }}>
+      {DEMO && !register ? (
+        <DemoCredentials onFill={(demoEmail, demoPassword) => {
+          setEmail(demoEmail);
+          setPassword(demoPassword);
+          setErrors({});
+        }} />
+      ) : null}
       <Input
         label={t('auth.email.label')} placeholder={t('auth.email.placeholder')} value={email}
         onChangeText={setEmail} error={message(errors.email)} inputRef={emailRef} testID={`${mode}-email-input`}
